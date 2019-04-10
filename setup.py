@@ -14,6 +14,7 @@ setup(
     author_email='luolingchun.com@gmail.com',
     license='GPLv3',
     packages=['pyqss'],
+    data_files=[('pyqss',['pyqss/default.qss'])],
     zip_safe=False,
     install_requires=['PyQt5']
 )
