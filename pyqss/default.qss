@@ -1,0 +1,94 @@
+#QSSDialog{
+	border:0px;
+	border-radius:6px;
+	background:rgba(39, 40, 34, 255);
+}
+
+#LabelIcon{
+	color:green;
+	min-width:40;
+	min-height:40;
+	font-size:30px;
+	font-family:"Microsoft Yahei";
+	background:rgba(39, 40, 34, 255);
+}
+
+#BackWidget{
+	background:rgba(39, 40, 34, 255);
+}
+
+#open,#save{
+	font-family:"Microsoft Yahei";
+}
+
+#open,#save,#min,#close{
+	border:0px;
+	min-width:60px;
+	min-height:40px;
+	color:white;
+	font-size:14px;
+}
+
+#open::hover,#save::hover,#min::hover{
+	background:#515151;
+}
+
+#close::hover{
+	background:rgb(240, 104, 36);
+}
+
+#Title{
+	color:white;
+	font-size:16px;
+	font-family:"Microsoft Yahei";
+}
+
+#TextEdit{
+	border:0px;
+	color:white;
+	background:rgba(39, 40, 34,255);
+	font-family:"Consolas";
+	font-size:16px;
+}
+
+QScrollBar::vertical{
+	border:0px;
+	background:rgba(39, 40, 34,255);
+	width:12px;	
+}
+
+QScrollBar::sub-line:vertical{
+	height:0px;
+}
+
+QScrollBar::sub-page:vertical{
+	background:rgba(39, 40, 34,255);
+}
+
+QScrollBar::sub-page:vertical:hover{
+	background:rgba(39, 40, 34,255);
+}
+
+QScrollBar::handle:vertical{
+	border-radius:5px;
+	background:rgba(81,81,81,100);
+}
+
+QScrollBar::handle:vertical:hover{
+	border-radius:5px;
+	background:rgba(81,81,81,200);
+}
+
+QScrollBar::add-page:vertical{
+	background:rgba(39, 40, 34,255);
+}
+
+QScrollBar::add-page:vertical:hover{
+	background:rgba(39, 40, 34,255);
+}
+
+QScrollBar::add-line:vertical{
+	height:0px;
+}
+
+
