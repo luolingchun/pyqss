@@ -11,7 +11,7 @@ from pyqss.ui import resource_rc
 from pyqss.ui.frameless_window import FramelessWindow
 from pyqss.sci.editor import TextEdit
 
-__version__ = '1.0.0'
+__version__ = '2.0.0'
 
 
 class Qss(FramelessWindow):
@@ -29,7 +29,6 @@ class Qss(FramelessWindow):
         # 加载样式
         qss = open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r').read()
         self.setStyleSheet(qss)
-        self.text_edit.setText(qss)
 
     def setup_ui(self):
         self.setObjectName('QSSDialog')
@@ -86,6 +85,7 @@ class Qss(FramelessWindow):
         self.text_edit.setMouseTracking(True)
         self.text_edit.installEventFilter(self)
         self.text_edit.setObjectName('TextEdit')
+        self.text_edit.lexer.add_object_names()  # 将ObjectName添加API中
         self.text_edit.textChanged.connect(self.text_edit_textChanged)
         self.grid_layout.addWidget(self.text_edit, 1, 0, 1, 1)
         # 槽函数
@@ -97,7 +97,6 @@ class Qss(FramelessWindow):
 
     def text_edit_textChanged(self):
         _str = self.text_edit.text()
-        self.setStyleSheet(_str)
         self.label_title.setText(self.label_title.text().strip('*') + '*')
         if not hasattr(self.custom_widget, 'setStyleSheet'):
             return

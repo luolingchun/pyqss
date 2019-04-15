@@ -3,7 +3,7 @@
 # @Author  : llc
 # @File    : setup.py
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from pyqss import __version__
 
 setup(
@@ -13,8 +13,8 @@ setup(
     author='llc',
     author_email='luolingchun.com@gmail.com',
     license='GPLv3',
-    packages=['pyqss'],
-    data_files=[('pyqss',['pyqss/default.qss'])],
+    packages=find_packages(),
+    data_files=[('pyqss/qss', ['pyqss/qss/default.qss'])],
     zip_safe=False,
     install_requires=['PyQt5']
 )
