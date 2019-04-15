@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/3/22 9:53
 # @Author  : llc
-# @File    : __init__.py.py
+# @File    : test_window.py
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
-
-__version__ = '0.0.1'
 
 from PyQt5.QtWidgets import QGridLayout, QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, \
     QTextEdit, QLabel, QDialog

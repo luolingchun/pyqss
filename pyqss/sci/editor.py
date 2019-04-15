@@ -3,14 +3,14 @@
 # @Author  : llc
 # @File    : editor.py
 
-from PyQt5.Qsci import QsciScintilla, QsciLexerCSS, QsciAPIs
+from PyQt5.Qsci import QsciScintilla
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QColor, QPalette, QFontMetrics
+from PyQt5.QtGui import QColor
 from .lexer import QsciLexerQSS
 
 
 class TextEdit(QsciScintilla):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(TextEdit, self).__init__(parent)
         # 行尾字符
         self.setEolMode(QsciScintilla.EolUnix)
@@ -41,42 +41,39 @@ class TextEdit(QsciScintilla):
         self.setCaretLineBackgroundColor(QColor(62, 61, 50))  # 选中行背景色
 
         # 自动补全
-        self.setAutoCompletionCaseSensitivity(False)  # 不区分大小写
+        self.setAutoCompletionCaseSensitivity(False)  # 不区分大小写,好像没用
         self.setAutoCompletionReplaceWord(False)  # 不替换光标右侧的单词
-        self.setAutoCompletionSource(QsciScintilla.AcsDocument)
+        self.setAutoCompletionSource(QsciScintilla.AcsAll)
         self.setAutoCompletionThreshold(1)  # 输入1个字符立即显示
+        # self.setAutoCompletionUseSingle(QsciScintilla.AcusAlways) #当只有一个时s自动填充
 
         # 左侧栏
-        self.setMarginType(0, QsciScintilla.NumberMargin)  # 行号
-        self.setMarginLineNumbers(0, True)
-        self.setMarginsForegroundColor(QColor(163, 163, 163))  # 前景色
-        self.setMarginsBackgroundColor(QColor(39, 40, 34))  # 背景色
+        self.setMarginLineNumbers(0, True)  # 行号
+        self.setMarginWidth(1, 2)  # 第二列不显示
+        self.setFolding(QsciScintilla.PlainFoldStyle, 2)  # 折叠
+        self.setMarginWidth(2, 12)
+        self.setFoldMarginColors(QColor(39, 40, 34), QColor(39, 40, 34))
         self.setMarginWidth(0, "00000")
         self.setMarginSensitivity(0, True)
+        self.setMarginsForegroundColor(QColor(163, 163, 163))  # 前景色
+        self.setMarginsBackgroundColor(QColor(39, 40, 34))  # 背景色
 
         # 滚动条
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
 
         # 语法分析器
-        lexer = QsciLexerQSS(self)
-        self.setLexer(lexer)
-
-        # 自动折叠
-        # self.setMarginType(1, QsciScintilla.SymbolMargin)
-        # self.setMarginLineNumbers(1, False)
-        # self.setMarginWidth(1, 15)
-        # self.setMarginSensitivity(1, True)
+        self.lexer = QsciLexerQSS(self)
+        self.setLexer(self.lexer)
 
         # 括号匹配
         self.setBraceMatching(QsciScintilla.SloppyBraceMatch)  # 括号匹配
         self.setMatchedBraceBackgroundColor(QColor(58, 109, 160))  # 括号匹配背景色
 
         # 选择
+        self.selectionToEol()
+        self.resetSelectionForegroundColor()  # 选中文字，文字不变成白色
         self.setSelectionBackgroundColor(QColor(110, 109, 98))  # 选中文字背景色
 
         # 其它
         # self.zoomTo(4)  # 缩放因子
         self.setUtf8(True)
-
-        # 信号
-        # self.SCN_ZOOM.connect(lambda :print(self.font().pointSize()))
