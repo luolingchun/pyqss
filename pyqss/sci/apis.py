@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/4/11 14:02
 # @Author  : llc
-# @File    : apis.py
+# @File    : job_api.py
 
 widgets = ["QAbstractScrollArea", "QCheckBox", "QColumnView", "QComboBox", "QDateEdit", "QDateTimeEdit", "QDialog",
            "QDialogButtonBox", "QDockWidget", "QDoubleSpinBox", "QFrame", "QGroupBox", "QHeaderView", "QLabel",
            "QLineEdit", "QListView", "QListWidget", "QMainWindow", "QMenu", "QMenuBar", "QMessageBox",
            "QProgressBar", "QPushButton", "QRadioButton", "QScrollBar", "QSizeGrip", "QSlider", "QSpinBox",
            "QSplitter", "QStatusBar", "QTabBar", "QTabWidget", "QTableView", "QTableWidget", "QTextEdit",
-           "QTimeEdit", "QToolBar", "QToolButton", "QToolBox", "QToolTip", "QTreeView", "QTreeWidget", "QWidget",]
+           "QTimeEdit", "QToolBar", "QToolButton", "QToolBox", "QToolTip", "QTreeView", "QTreeWidget", "QWidget",
+           "QsciScintilla", "QAbstractItemView"]
 
 properties = ["alternate-background-color", "background", "background-color", "background-image", "background-repeat",
               "background-position", "background-attachment", "background-clip", "background-origin", "border",
@@ -27,7 +28,7 @@ properties = ["alternate-background-color", "background", "background-color", "b
               "outline-top-right-radius", "padding", "padding-top", "padding-right", "padding-bottom",
               "padding-left", "paint-alternating-row-colors-for-empty-area", "position", "right",
               "selection-background-color", "selection-color", "show-decoration-selected", "spacing",
-              "subcontrol-origin", "subcontrol-position", "titlebar-show-tooltips-on-buttons}",
+              "subcontrol-origin", "subcontrol-position", "titlebar-show-tooltips-on-buttons",
               "widget-animation-duration", "text-align", "text-decoration", "top", "width"]
 
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -59,9 +60,9 @@ pseudo_states = ["active", "adjoins-item", "alternate", "bottom", "checked", "cl
                  "only-one", "open", "next-selected", "pressed", "previous-selected", "read-only", "right",
                  "selected", "top", "unchecked", "vertical", "window"]
 
-sub_controls = ["::add-line", "::add-page", "::branch", "::chunk", "::close-button", "::corner", "::down-arrow",
-                "::down-button", "::drop-down", "::float-button", "::groove", "::indicator", "::handle", "::icon",
-                "::item", "::left-arrow", "::left-corner", "::menu-arrow", "::menu-button", "::menu-indicator",
-                "::right-arrow", "::pane", "::right-corner", "::scroller", "::section", "::separator", "::sub-line",
-                "::sub-page", "::tab", "::tab-bar", "::tear", "::tearoff", "::text", "::title", "::up-arrow",
-                "::up-button"]
+sub_controls = ["add-line", "add-page", "branch", "chunk", "close-button", "corner", "down-arrow",
+                "down-button", "drop-down", "float-button", "groove", "indicator", "handle", "icon",
+                "item", "left-arrow", "left-corner", "menu-arrow", "menu-button", "menu-indicator",
+                "right-arrow", "pane", "right-corner", "scroller", "section", "separator", "sub-line",
+                "sub-page", "tab", "tab-bar", "tear", "tearoff", "text", "title", "up-arrow",
+                "up-button"]

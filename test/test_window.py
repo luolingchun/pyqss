@@ -21,7 +21,7 @@ class TestWindow(QDialog):
                             Qt.WindowSystemMenuHint |
                             Qt.WindowMinMaxButtonsHint |
                             Qt.WindowCloseButtonHint)
-        self._margin = 3
+        self._margin = 0
 
         self._setup_ui()
 
