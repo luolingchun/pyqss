@@ -24,6 +24,7 @@ class QsciLexerQSS(QsciLexerCustom):
             "Properties": 2,
             "Numbers": 3,
             'Colors': 4,
+            'Annotation': 5,
         }
 
         self.__widgets = widgets
@@ -34,7 +35,7 @@ class QsciLexerQSS(QsciLexerCustom):
         self.__init_colors()
 
         # api
-        self.__apis = self.__widgets + properties + colors + sub_controls
+        self.__apis = self.__widgets + properties + pseudo_states + colors + sub_controls
         self.__api = QsciAPIs(self)
 
     def description(self, style):
@@ -48,6 +49,8 @@ class QsciLexerQSS(QsciLexerCustom):
             return 'Numbers'
         elif style == 4:
             return 'Colors'
+        elif style == 5:
+            return 'Annotation'
 
     def language(self):
         return "QSS"
@@ -59,6 +62,7 @@ class QsciLexerQSS(QsciLexerCustom):
         self.setColor(QColor(102, 217, 239), self.__styles["Properties"])
         self.setColor(QColor(174, 129, 255), self.__styles["Numbers"])
         self.setColor(QColor(104, 232, 104), self.__styles["Colors"])
+        self.setColor(QColor(117, 113, 94), self.__styles["Annotation"])
         # 背景颜色
         # for i in range(len(self.__styles)):
         #     self.setPaper(QColor(39, 40, 34), i)
@@ -84,7 +88,7 @@ class QsciLexerQSS(QsciLexerCustom):
 
     def styleText(self, start, end):
         self.startStyling(start)
-        splitter = re.compile(r"\s+|\d|\w+-\w+|\w+|\W")
+        splitter = re.compile(r"\/\*.*\*\/|s+|\d|\w+-\w+-\w+-\w+-\w+|\w+-\w+-\w+-\w+|\w+-\w+-\w+|\w+-\w+|\w+|\W")
         text = self.parent().text()[start:end]
         tokens = [(token, len(bytearray(token, "utf-8"))) for token in splitter.findall(text)]
         # print(tokens)
@@ -97,6 +101,8 @@ class QsciLexerQSS(QsciLexerCustom):
                 self.setStyling(token[1], self.__styles["Numbers"])
             elif token[0] in self.__colors:
                 self.setStyling(token[1], self.__styles["Colors"])
+            elif token[0].startswith('/*') or token[0].endswith('*/'):
+                self.setStyling(token[1], self.__styles["Annotation"])
             else:
                 self.setStyling(token[1], self.__styles["Default"])
 

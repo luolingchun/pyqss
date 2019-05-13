@@ -11,7 +11,7 @@ from pyqss.ui import resource_rc
 from pyqss.ui.frameless_window import FramelessWindow
 from pyqss.sci.editor import TextEdit
 
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class Qss(FramelessWindow):
@@ -97,6 +97,7 @@ class Qss(FramelessWindow):
 
     def text_edit_textChanged(self):
         _str = self.text_edit.text()
+        self.setStyleSheet(_str)
         self.label_title.setText(self.label_title.text().strip('*') + '*')
         if not hasattr(self.custom_widget, 'setStyleSheet'):
             return
@@ -109,7 +110,7 @@ class Qss(FramelessWindow):
                 self.text_edit.clear()
                 self.text_edit.append(f.read())
             self.qss_file = qss
-            self.label_title.setText(self.title + '-' + os.path.basename(qss).split('.')[0])
+            self.label_title.setText(self.title + '-' + str(os.path.basename(qss).split('.')[0]))
 
     def pushButton_save_clicked(self):
         if self.qss_file:
@@ -120,12 +121,14 @@ class Qss(FramelessWindow):
             with open(qss, 'w') as f:
                 f.write(self.text_edit.text())
             self.qss_file = qss
-            self.label_title.setText(self.title + '-' + os.path.basename(qss).split('.')[0])
+            self.label_title.setText(self.title + '-' + str(os.path.basename(qss).split('.')[0]))
+            return True
+        return False
 
     def shortcut_save_activated(self):
         if not self.qss_file:
-            self.pushButton_save_clicked()
-            self.label_title.setText(self.label_title.text().strip('*'))
+            if self.pushButton_save_clicked():
+                self.label_title.setText(self.label_title.text().strip('*'))
         else:
             with open(self.qss_file, 'w') as f:
                 f.write(self.text_edit.text())
