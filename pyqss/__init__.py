@@ -97,7 +97,7 @@ class Qss(FramelessWindow):
 
     def text_edit_textChanged(self):
         _str = self.text_edit.text()
-        self.setStyleSheet(_str)
+        # self.setStyleSheet(_str)
         self.label_title.setText(self.label_title.text().strip('*') + '*')
         if not hasattr(self.custom_widget, 'setStyleSheet'):
             return
