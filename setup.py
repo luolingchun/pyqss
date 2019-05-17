@@ -16,5 +16,5 @@ setup(
     packages=find_packages(),
     data_files=[('pyqss/qss', ['pyqss/qss/default.qss'])],
     zip_safe=False,
-    install_requires=['PyQt5']
+    install_requires=['PyQt5','QScintilla']
 )
