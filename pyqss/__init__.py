@@ -7,11 +7,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QKeySequence, QIcon
 from PyQt5.QtWidgets import QGridLayout, QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
     QShortcut, QLabel
-from pyqss.ui import resource_rc
+from pyqss.ui import icon
 from pyqss.ui.frameless_window import FramelessWindow
 from pyqss.sci.editor import TextEdit
 
-__version__ = '2.0.1'
+__version__ = '0.0.2'
 
 
 class Qss(FramelessWindow):
@@ -44,6 +44,7 @@ class Qss(FramelessWindow):
         self.hl.setContentsMargins(0, 0, 0, 0)
         self.hl.setSpacing(0)
         self.label_icon = QLabel('Q', self.title_widget)
+        self.label_icon.setMouseTracking(True)
         self.label_icon.setParent(self)
         self.label_icon.setObjectName('LabelIcon')
         self.label_icon.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
@@ -81,7 +82,7 @@ class Qss(FramelessWindow):
         self.hl.addWidget(self.pushButton_close)
         self.grid_layout.addWidget(self.title_widget, 0, 0, 1, 1)
         # QScintilla
-        self.text_edit = TextEdit(self)
+        self.text_edit = TextEdit(self, self.custom_widget)
         self.text_edit.setMouseTracking(True)
         self.text_edit.installEventFilter(self)
         self.text_edit.setObjectName('TextEdit')
