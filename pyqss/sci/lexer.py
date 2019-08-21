@@ -10,15 +10,15 @@ from .apis import *
 
 
 class QsciLexerQSS(QsciLexerCustom):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, custom_widget=None):
         super(QsciLexerQSS, self).__init__(parent)
-
+        self.custom_widget = custom_widget
         self.setDefaultColor(QColor(248, 248, 248))  # 默认前景色
         self.setDefaultPaper(QColor(39, 40, 34))  # 默认背景色
         self.setDefaultFont(QFont("Consolas", 12))  # 默认字体
 
         # 样式
-        self.__styles = {
+        self._styles = {
             "Default": 0,
             "Widgets": 1,
             "Properties": 2,
@@ -27,16 +27,16 @@ class QsciLexerQSS(QsciLexerCustom):
             'Annotation': 5,
         }
 
-        self.__widgets = widgets
-        self.__properties = properties
-        self.__numbers = numbers
-        self.__colors = colors
+        self._widgets = widgets
+        self._properties = properties
+        self._numbers = numbers
+        self._colors = colors
 
-        self.__init_colors()
+        self._init_colors()
 
         # api
-        self.__apis = self.__widgets + properties + pseudo_states + colors + sub_controls
-        self.__api = QsciAPIs(self)
+        self._apis = self._widgets + properties + pseudo_states + colors + sub_controls
+        self._api = QsciAPIs(self)
 
     def description(self, style):
         if style == 0:
@@ -55,35 +55,35 @@ class QsciLexerQSS(QsciLexerCustom):
     def language(self):
         return "QSS"
 
-    def __init_colors(self):
+    def _init_colors(self):
         # 字体颜色
-        self.setColor(QColor(255, 255, 255), self.__styles["Default"])
-        self.setColor(QColor(165, 197, 39), self.__styles["Widgets"])
-        self.setColor(QColor(102, 217, 239), self.__styles["Properties"])
-        self.setColor(QColor(174, 129, 255), self.__styles["Numbers"])
-        self.setColor(QColor(104, 232, 104), self.__styles["Colors"])
-        self.setColor(QColor(117, 113, 94), self.__styles["Annotation"])
+        self.setColor(QColor(255, 255, 255), self._styles["Default"])
+        self.setColor(QColor(165, 197, 39), self._styles["Widgets"])
+        self.setColor(QColor(102, 217, 239), self._styles["Properties"])
+        self.setColor(QColor(174, 129, 255), self._styles["Numbers"])
+        self.setColor(QColor(104, 232, 104), self._styles["Colors"])
+        self.setColor(QColor(117, 113, 94), self._styles["Annotation"])
         # 背景颜色
-        # for i in range(len(self.__styles)):
+        # for i in range(len(self._styles)):
         #     self.setPaper(QColor(39, 40, 34), i)
 
     def add_object_names(self):
-        main_window = self.parent().parent()
+        main_window = self.custom_widget
         if main_window:
             if main_window.objectName():
-                self.__widgets.append(main_window.objectName())
-                self.__apis.append(main_window.objectName())
+                self._widgets.append(main_window.objectName())
+                self._apis.append(main_window.objectName())
             self.__append_object_names(main_window)
         # 初始化api
-        for _api in self.__apis:
-            self.__api.add(_api)
-        self.__api.prepare()
+        for _api in self._apis:
+            self._api.add(_api)
+        self._api.prepare()
 
     def __append_object_names(self, widget):
         for child in widget.children():
             if child.objectName():
-                self.__widgets.append(child.objectName())
-                self.__apis.append(child.objectName())
+                self._widgets.append(child.objectName())
+                self._apis.append(child.objectName())
             self.__append_object_names(child)
 
     def styleText(self, start, end):
@@ -93,18 +93,18 @@ class QsciLexerQSS(QsciLexerCustom):
         tokens = [(token, len(bytearray(token, "utf-8"))) for token in splitter.findall(text)]
         # print(tokens)
         for i, token in enumerate(tokens):
-            if token[0] in self.__widgets:
-                self.setStyling(token[1], self.__styles["Widgets"])
-            elif token[0] in self.__properties:
-                self.setStyling(token[1], self.__styles["Properties"])
-            elif token[0] in self.__numbers:
-                self.setStyling(token[1], self.__styles["Numbers"])
-            elif token[0] in self.__colors:
-                self.setStyling(token[1], self.__styles["Colors"])
+            if token[0] in self._widgets:
+                self.setStyling(token[1], self._styles["Widgets"])
+            elif token[0] in self._properties:
+                self.setStyling(token[1], self._styles["Properties"])
+            elif token[0] in self._numbers:
+                self.setStyling(token[1], self._styles["Numbers"])
+            elif token[0] in self._colors:
+                self.setStyling(token[1], self._styles["Colors"])
             elif token[0].startswith('/*') or token[0].endswith('*/'):
-                self.setStyling(token[1], self.__styles["Annotation"])
+                self.setStyling(token[1], self._styles["Annotation"])
             else:
-                self.setStyling(token[1], self.__styles["Default"])
+                self.setStyling(token[1], self._styles["Default"])
 
         # 折叠
         lines = self.parent().text().splitlines()

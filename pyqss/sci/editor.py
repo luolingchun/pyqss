@@ -6,13 +6,12 @@
 from PyQt5.Qsci import QsciScintilla
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QApplication
 
 from .lexer import QsciLexerQSS
 
 
 class TextEdit(QsciScintilla):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, custom_widget=None):
         super(TextEdit, self).__init__(parent)
         # 行尾字符
         self.setEolMode(QsciScintilla.EolUnix)
@@ -64,7 +63,7 @@ class TextEdit(QsciScintilla):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
 
         # 语法分析器
-        self.lexer = QsciLexerQSS(self)
+        self.lexer = QsciLexerQSS(self, custom_widget)
         self.setLexer(self.lexer)
 
         # 括号匹配
@@ -94,11 +93,9 @@ class TextEdit(QsciScintilla):
     # def set_width(self):
     #     self.setMarginWidth(0, self.SendScintilla(self.SCI_GETZOOM) + self.marginWidth(0) + 18)
 
-    def keyPressEvent(self, event):
-        super(TextEdit, self).keyPressEvent(event)
-        if event.key() == Qt.Key_Slash:  # 斜线 /
-            if QApplication.keyboardModifiers() == Qt.ControlModifier:
-                row, col = self.getCursorPosition()
-                # self.insertAt('*/', row, col)
-                # text = self.text(row)
-                # 快捷键 ctrl+/
+    # def keyPressEvent(self, event):
+    #     if event.modifiers()==Qt.ControlModifier and event.key() == Qt.Key_Slash:  # 斜线 /
+    #         # 快捷键 ctrl+/
+    #         print(111111111111111111)
+    #     else:
+    #         super(TextEdit, self).keyPressEvent(event)

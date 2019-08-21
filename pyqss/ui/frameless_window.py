@@ -2,6 +2,7 @@
 # @Time    : 2019/4/12 10:20
 # @Author  : llc
 # @File    : frameless_window.py
+
 from PyQt5.Qsci import QsciScintilla
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QPainter, QEnterEvent, QPen, QColor
@@ -9,8 +10,8 @@ from PyQt5.QtWidgets import QDialog, QStyleOption, QStyle
 
 
 class FramelessWindow(QDialog):
-    def __init__(self):
-        super(FramelessWindow, self).__init__()
+    def __init__(self,parent=None):
+        super(FramelessWindow, self).__init__(parent=parent)
         self.margin = 4
         self.__top_drag = False
         self.__bottom_drag = False
