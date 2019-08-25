@@ -73,18 +73,18 @@ class QsciLexerQSS(QsciLexerCustom):
             if main_window.objectName():
                 self._widgets.append(main_window.objectName())
                 self._apis.append(main_window.objectName())
-            self.__append_object_names(main_window)
+            self._append_object_names(main_window)
         # 初始化api
         for _api in self._apis:
             self._api.add(_api)
         self._api.prepare()
 
-    def __append_object_names(self, widget):
+    def _append_object_names(self, widget):
         for child in widget.children():
             if child.objectName():
                 self._widgets.append(child.objectName())
                 self._apis.append(child.objectName())
-            self.__append_object_names(child)
+            self._append_object_names(child)
 
     def styleText(self, start, end):
         self.startStyling(start)
