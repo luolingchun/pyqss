@@ -7,11 +7,10 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QKeySequence, QIcon
 from PyQt5.QtWidgets import QGridLayout, QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
     QShortcut, QLabel
-from pyqss.ui import icon
 from pyqss.ui.frameless_window import FramelessWindow
 from pyqss.sci.editor import TextEdit
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 
 class Qss(FramelessWindow):
@@ -24,8 +23,6 @@ class Qss(FramelessWindow):
         self.qss_file = ''
         self.setup_ui()
 
-        # 设置图标
-        self.setWindowIcon(QIcon(':/icon/1.png'))
         # 加载样式
         qss = open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r').read()
         self.setStyleSheet(qss)
