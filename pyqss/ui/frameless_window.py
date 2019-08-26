@@ -10,8 +10,8 @@ from PyQt5.QtWidgets import QDialog, QStyleOption, QStyle
 
 
 class FramelessWindow(QDialog):
-    def __init__(self,parent=None):
-        super(FramelessWindow, self).__init__(parent=parent)
+    def __init__(self):
+        super(FramelessWindow, self).__init__()
         self.margin = 4
         self._top_drag = False
         self._bottom_drag = False
@@ -198,16 +198,16 @@ class FramelessWindow(QDialog):
         super(FramelessWindow, self).leaveEvent(event)
         self.setCursor(Qt.ArrowCursor)
 
-    # def paintEvent(self, event):
-    #     '''无边框透明后圆角问题'''
-    #     super(FramelessWindow, self).paintEvent(event)
-    #     opt = QStyleOption()
-    #     opt.initFrom(self)
-    #     painter = QPainter(self)
-    #     painter.setRenderHint(QPainter.Antialiasing)
-    #     painter.setPen(QPen(QColor(0, 0, 0, 1), 2 * self.margin))
-    #     painter.drawRect(self.rect())
-    #     self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
+    def paintEvent(self, event):
+        '''无边框透明后圆角问题'''
+        super(FramelessWindow, self).paintEvent(event)
+        opt = QStyleOption()
+        opt.initFrom(self)
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setPen(QPen(QColor(0, 0, 0, 1), 2 * self.margin))
+        painter.drawRect(self.rect())
+        self.style().drawPrimitive(QStyle.PE_Widget, opt, painter, self)
 
     def eventFilter(self, obj, event):
         if isinstance(obj, QsciScintilla) and isinstance(event, QEnterEvent):
