@@ -6,13 +6,13 @@ import re
 
 from PyQt5.Qsci import QsciLexerCustom, QsciAPIs, QsciScintilla
 from PyQt5.QtGui import QColor, QFont
+
 from .apis import *
 
 
 class QsciLexerQSS(QsciLexerCustom):
-    def __init__(self, parent=None, custom_widget=None):
+    def __init__(self, parent=None):
         super(QsciLexerQSS, self).__init__(parent)
-        self.custom_widget = custom_widget
         self.setDefaultColor(QColor(248, 248, 248))  # 默认前景色
         self.setDefaultPaper(QColor(39, 40, 34))  # 默认背景色
         self.setDefaultFont(QFont("Consolas", 12))  # 默认字体
@@ -67,8 +67,7 @@ class QsciLexerQSS(QsciLexerCustom):
         # for i in range(len(self._styles)):
         #     self.setPaper(QColor(39, 40, 34), i)
 
-    def add_object_names(self):
-        main_window = self.custom_widget
+    def add_object_names(self, main_window):
         if main_window:
             if main_window.objectName():
                 self._widgets.append(main_window.objectName())

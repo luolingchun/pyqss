@@ -9,16 +9,19 @@
 }
 
 #BackWidget{
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
+	border-radius:5px;
 	background:rgba(39, 40, 34, 255);
 }
 
-#open,#save{
+#btn_open,#btn_save{
 	font-family:"Microsoft Yahei";
 }
 
-#open,#save,#min,#close{
+#btn_min,#btn_close{
+	font-family:"Webdings";
+}
+
+#btn_open,#btn_save,#btn_min,#btn_close{
 	border:0px;
 	min-width:60px;
 	min-height:40px;
@@ -26,11 +29,11 @@
 	font-size:14px;
 }
 
-#open:hover,#save:hover,#min:hover{
+#btn_open:hover,#btn_save:hover,#btn_min:hover{
 	background:#515151;
 }
 
-#close:hover{
+#btn_close:hover{
 	border-top-right-radius:5px;
 	background:rgb(240, 104, 36);
 }
@@ -77,25 +80,25 @@ QScrollBar::add-line:vertical{
 	height:0px;
 }
 
-QsciScintilla QAbstractItemView{
+QAbstractItemView{
 	border:1px solid rgb(86, 86, 86);
 	color:rgb(160, 161, 162);
 	background:rgb(60, 63, 65);
 }
 
-QsciScintilla QAbstractItemView:item{
+QAbstractItemView:item{
 	border:0px;
 	color:rgb(160, 161, 162);
 	background:rgb(60, 63, 65);
 }
 
-QsciScintilla QAbstractItemView:item:hover{
+QAbstractItemView:item:hover{
 	border:0px;
 	color:rgb(160, 161, 162);
 	background:rgb(54, 71, 84);
 }
 
-QsciScintilla QAbstractItemView:item:selected{
+QAbstractItemView:item:selected{
 	border:0px;
 	color:rgb(160, 161, 162);
 	background:rgb(54, 71, 84);
@@ -124,6 +127,7 @@ QsciScintilla QAbstractItemView QScrollBar::sub-page:vertical{
 QsciScintilla QAbstractItemView QScrollBar::add-page:vertical{
 	background:rgb(60, 63, 65);
 }
+
 QsciScintilla QAbstractItemView QScrollBar:horizontal{
 	border:0px;
 	width:0px;

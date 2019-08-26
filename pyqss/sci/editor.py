@@ -11,8 +11,8 @@ from .lexer import QsciLexerQSS
 
 
 class TextEdit(QsciScintilla):
-    def __init__(self, parent=None, custom_widget=None):
-        super(TextEdit, self).__init__(parent)
+    def __init__(self):
+        super(TextEdit, self).__init__()
         # 行尾字符
         self.setEolMode(QsciScintilla.EolUnix)
         # self.setEolVisibility(True)
@@ -63,7 +63,7 @@ class TextEdit(QsciScintilla):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
 
         # 语法分析器
-        self.lexer = QsciLexerQSS(self, custom_widget)
+        self.lexer = QsciLexerQSS(self)
         self.setLexer(self.lexer)
 
         # 括号匹配
