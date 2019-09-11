@@ -22,6 +22,7 @@ class FramelessWindow(QDialog):
         self._top_left_drag = False
         self._top_right_drag = False
         self._start_point = None
+        self._move_flag = False
         self.setMouseTracking(True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setWindowFlags(Qt.Dialog |
@@ -66,6 +67,7 @@ class FramelessWindow(QDialog):
             event.accept()
         elif event.button() == Qt.LeftButton:
             # 移动
+            self._move_flag = True
             event.accept()
 
     def mouseMoveEvent(self, event):
@@ -156,7 +158,7 @@ class FramelessWindow(QDialog):
             self.setGeometry(self.pos().x(), self._pos.y() + diff_y, self._width + diff_x,
                              self._height - diff_y)
             event.accept()
-        elif event.buttons() == Qt.LeftButton and self._start_point:
+        elif event.buttons() == Qt.LeftButton and self._start_point and self._move_flag:
             # 移动
             diff_x = event.globalPos() - self._start_point
             self.move(self._pos + diff_x)

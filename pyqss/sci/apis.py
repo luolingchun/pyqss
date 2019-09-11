@@ -53,7 +53,7 @@ colors = ["aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "
           "teal", "thistle", "tomato", "turquoise", "violet", "violetred", "wheat", "white", "whitesmoke", "yellow",
           "yellowgreen", "rgb", "rgba"]
 
-pseudo_states = ["active", "adjoins-item", "alternate", "bottom", "checked", "closable", "closed", "default",
+pseudo_states = ["_opened", "adjoins-item", "alternate", "bottom", "checked", "closable", "closed", "default",
                  "disabled", "editable", "edit-focus", "enabled", "exclusive", "first", "flat", "floatable",
                  "focus", "has-children", "has-siblings", "horizontal", "hover", "indeterminate", "last", "left",
                  "maximized", "middle", "minimized", "movable", "no-frame", "non-exclusive", "off", "on",
