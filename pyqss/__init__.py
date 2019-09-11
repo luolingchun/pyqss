@@ -4,15 +4,15 @@
 # @File    : __init__.py
 import os
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QKeySequence
-from PyQt5.QtWidgets import QGridLayout, QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtGui import QKeySequence, QIcon, QPixmap, QImage, QPainter, QFont, QColor
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
     QShortcut, QLabel, QVBoxLayout
 
-from pyqss.ui.frameless_window import FramelessWindow
+from pyqss.widgets.frameless_window import FramelessWindow
 from pyqss.sci.editor import TextEdit
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 
 class Qss(FramelessWindow):
@@ -22,9 +22,10 @@ class Qss(FramelessWindow):
         self.setWindowTitle('QSS编辑器')
         self.resize(800, 600)
 
-        self.qss_file = ''
+        self.qss_file = None
         self.title = 'QSS编辑器'
         self.setup_ui()
+        self.set_icon()
 
         # 加载样式
         with open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r') as f:
@@ -132,6 +133,27 @@ class Qss(FramelessWindow):
             with open(self.qss_file, 'w') as f:
                 f.write(self.text_edit.text())
             self.label_title.setText(self.label_title.text().strip('*'))
+
+    def set_icon(self):
+        image = QImage(QSize(128, 128), QImage.Format_ARGB32)
+        text_painter = QPainter()
+        text_painter.begin(image)
+        text_painter.setRenderHint(QPainter.Antialiasing, True)
+        text_painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
+        font = QFont()
+        font.setFamily('Microsoft Yahei')
+        font.setPointSize(100)
+        text_painter.setFont(font)
+        text_painter.setPen(QColor(0, 128, 0))
+        text_painter.drawText(10, 106, 'Q')
+        text_painter.end()
+        p = QPixmap.fromImage(image)
+        self.setWindowIcon(QIcon(p))
+
+    def closeEvent(self, event):
+        if self.qss_file:
+            self.shortcut_save_activated()
+        event.accept()
 
 
 if __name__ == '__main__':
