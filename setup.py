@@ -14,7 +14,7 @@ setup(
     author_email='luolingchun.com@gmail.com',
     license='GPLv3',
     packages=find_packages(),
-    data_files=[('pyqss/qss', ['pyqss/qss/default.qss'])],
+    package_data={"pyqss": ["qss/*.qss"]},
     zip_safe=False,
-    install_requires=['PyQt5','QScintilla']
+    install_requires=['PyQt5', 'QScintilla']
 )
