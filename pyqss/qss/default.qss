@@ -44,7 +44,7 @@
 	font-family:"Microsoft Yahei";
 }
 
-#TextEdit{
+#QssEditor{
 	border:0px;
 }
 
@@ -95,13 +95,13 @@ QAbstractItemView:item{
 QAbstractItemView:item:hover{
 	border:0px;
 	color:rgb(160, 161, 162);
-	background:rgb(54, 71, 84);
+	background:rgb(33, 66, 131);
 }
 
 QAbstractItemView:item:selected{
 	border:0px;
 	color:rgb(160, 161, 162);
-	background:rgb(54, 71, 84);
+	background:rgb(33, 66, 131);
 }
 
 QsciScintilla QAbstractItemView QScrollBar:vertical{
