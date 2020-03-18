@@ -3,16 +3,20 @@
 # @Author  : llc
 # @File    : editor.py
 
-from PyQt5.Qsci import QsciScintilla
+from PyQt5.Qsci import QsciScintilla, QsciAPIs
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QKeySequence
+from PyQt5.QtWidgets import QShortcut, QApplication
 
+from .commenter import toggle_commenting
 from .lexer import QsciLexerQSS
+from .keywords import *
 
 
-class TextEdit(QsciScintilla):
-    def __init__(self):
-        super(TextEdit, self).__init__()
+class QssEditor(QsciScintilla):
+    def __init__(self, parent=None):
+        super(QssEditor, self).__init__(parent=parent)
+
         # 行尾字符
         self.setEolMode(QsciScintilla.EolUnix)
         # self.setEolVisibility(True)
@@ -65,6 +69,11 @@ class TextEdit(QsciScintilla):
         # 语法分析器
         self.lexer = QsciLexerQSS(self)
         self.setLexer(self.lexer)
+        # API
+        self.api = QsciAPIs(self.lexer)
+        self.api_list = WIDGET_LIST + PROPERTY_LIST + PSEUDO_STATE_LIST + COLOR_LIST + SUB_CONTROL_LIST
+        for p in PROPERTY_LIST:
+            self.api_list.extend(p.split('-'))
 
         # 括号匹配
         self.setBraceMatching(QsciScintilla.SloppyBraceMatch)  # 括号匹配
@@ -73,7 +82,7 @@ class TextEdit(QsciScintilla):
         # 选择
         self.selectionToEol()
         self.resetSelectionForegroundColor()  # 选中文字，文字不变成白色
-        self.setSelectionBackgroundColor(QColor(110, 109, 98))  # 选中文字背景色
+        self.setSelectionBackgroundColor(QColor(33, 66, 131))  # 选中文字背景色
 
         # 缩放
         # self.zoomTo(4)  # 缩放因子
@@ -83,19 +92,49 @@ class TextEdit(QsciScintilla):
         # 行数变化
         self.linesChanged.connect(self.onLinesChanged)
 
+        # # 多光标支持
+        self.SendScintilla(QsciScintilla.SCI_SETMULTIPLESELECTION, True)
+        self.SendScintilla(QsciScintilla.SCI_SETMULTIPASTE, 1)
+        self.SendScintilla(QsciScintilla.SCI_SETADDITIONALSELECTIONTYPING, True)
+
         # 其它
         self.setUtf8(True)
         self.setEdgeMode(QsciScintilla.EDGE_NONE)  # 行字数超过50时什么也不做，默认背景标记为绿色
 
+        QShortcut(QKeySequence("Ctrl+0"), self, self.test)
+
+    def test(self):
+        print('test')
+
     def onLinesChanged(self):
         self.setMarginWidth(0, self.fontMetrics().width(str(self.lines())) + 18)
 
-    # def set_width(self):
-    #     self.setMarginWidth(0, self.SendScintilla(self.SCI_GETZOOM) + self.marginWidth(0) + 18)
+    def add_apis(self, custom_widget):
+        """添加api，用于自动补全"""
+        if custom_widget:
+            if custom_widget.objectName():
+                self.lexer.widgets.append(custom_widget.objectName())
+                self.api_list.append(custom_widget.objectName())
+            self.get_object_names(custom_widget)
 
-    # def keyPressEvent(self, event):
-    #     if event.modifiers()==Qt.ControlModifier and event.key() == Qt.Key_Slash:  # 斜线 /
-    #         # 快捷键 ctrl+/
-    #         print(111111111111111111)
-    #     else:
-    #         super(TextEdit, self).keyPressEvent(event)
+        # 初始化api
+        for api in self.api_list:
+            self.api.add(api)
+        self.api.prepare()
+
+    def get_object_names(self, widget):
+        """遍历widget及其后代，获得objectName，用于自动补全"""
+        for child in widget.children():
+            if child.objectName():
+                self.lexer.widgets.append(child.objectName())
+                self.api_list.append(child.objectName())
+            self.get_object_names(child)
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        key_modifiers = QApplication.keyboardModifiers()
+        if key == Qt.Key_Slash and key_modifiers == Qt.ControlModifier:
+            # 注释快捷键，Ctrl+/
+            toggle_commenting(self)
+            return
+        super(QssEditor, self).keyPressEvent(event)
