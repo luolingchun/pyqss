@@ -92,11 +92,11 @@ QAbstractItemView:item{
 	background:rgb(60, 63, 65);
 }
 
-QAbstractItemView:item:hover{
-	border:0px;
-	color:rgb(160, 161, 162);
-	background:rgb(33, 66, 131);
-}
+/*QAbstractItemView:item:hover{*/
+/*	border:0px;*/
+/*	color:rgb(160, 161, 162);*/
+/*	background:rgb(33, 66, 131);*/
+/*}*/
 
 QAbstractItemView:item:selected{
 	border:0px;
