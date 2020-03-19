@@ -4,6 +4,7 @@
 # @File    : __init__.py
 import os
 
+from PyQt5.Qsci import QsciScintillaBase, QsciScintilla
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QKeySequence, QIcon, QPixmap, QImage, QPainter, QFont, QColor
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
@@ -13,7 +14,7 @@ from pyqss.tr import init_language
 from pyqss.widgets.frameless_window import FramelessWindow
 from pyqss.sci.editor import QssEditor
 
-__version__ = '0.9.1'
+__version__ = '1.0'
 
 
 class Qss(FramelessWindow):
@@ -24,6 +25,8 @@ class Qss(FramelessWindow):
         self.tr = init_language(language)
 
         self.resize(600, 400)
+        self.text_to_find = ''
+        self.state_ = tuple()
 
         self.qss_file = None
         self.qss_name = 'unknown'
@@ -32,8 +35,15 @@ class Qss(FramelessWindow):
         self.setup_ui()
         self.set_icon()
 
-        self.label_title = self.findChild(QLabel, "Title")
         self.editor = self.findChild(QssEditor, "QssEditor")
+        self.label_title = self.findChild(QLabel, "Title")
+        self.fr_widget = self.findChild(QWidget, "FRWidget")
+        self.lineEdit_find = self.fr_widget.findChild(QLineEdit, "LineEditFind")
+        self.lineEdit_replace = self.fr_widget.findChild(QLineEdit, "LineEditReplace")
+        self.btn_pre = self.fr_widget.findChild(QPushButton, "btn_pre")
+        self.btn_next = self.fr_widget.findChild(QPushButton, "btn_next")
+        self.btn_replace = self.fr_widget.findChild(QPushButton, "btn_replace")
+        self.btn_replace_all = self.fr_widget.findChild(QPushButton, "btn_replace_all")
 
         self.editor.add_apis(self.custom_widget)
 
@@ -47,9 +57,14 @@ class Qss(FramelessWindow):
         # 查找替换
         QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
 
+        # 信号和槽
+        self.lineEdit_find.textChanged.connect(self.lineEdit_find_textChanged)
+        self.btn_pre.clicked.connect(lambda: self.findText(forward=False))
+        self.btn_next.clicked.connect(lambda: self.findText(forward=True))
+
     def setup_ui(self):
         widget = QWidget(self)
-        widget.setObjectName('BackWidget')
+        widget.setObjectName('TopWidget')
         widget.setMouseTracking(True)
         hl = QHBoxLayout(self)
         hl.addWidget(widget)
@@ -110,34 +125,58 @@ class Qss(FramelessWindow):
         shortcut_save = QShortcut(QKeySequence.Save, self)
         shortcut_save.activated.connect(self.shortcut_save_activated)
 
-    def find_replace(self):
-        print('find')
+        # find and replace
+        self.setup_fr_ui()
+
+    def setup_fr_ui(self):
+        """查找替换"""
+
+        def rf_resize():
+            widget.resize(self.width() - 32 * self.margin, 40)
+
         widget = QWidget(self)
-        widget.setGeometry(self.width(), 40)
-        widget.setObjectName("FindReplace")
+        widget.setMouseTracking(False)
+        widget.setObjectName('FRWidget')
+        widget.setGeometry(self.x() + 16 * self.margin, self.y() + 60,
+                           self.width() - 32 * self.margin, 40)
+        self.resized.connect(rf_resize)
         gridLayout = QGridLayout(widget)
         gridLayout.setContentsMargins(0, 0, 0, 0)
         lineEdit_find = QLineEdit(widget)
-        lineEdit_find.setObjectName("lineEdit_find")
+        lineEdit_find.setPlaceholderText(self.tr("find"))
+        lineEdit_find.setObjectName("LineEditFind")
         gridLayout.addWidget(lineEdit_find, 0, 0, 1, 1)
-        label_pre = QLabel('f', widget)
-        label_pre.setObjectName("label_pre")
-        gridLayout.addWidget(label_pre, 0, 1, 1, 1)
-        label_next = QLabel('g', widget)
-        label_next.setObjectName("label_2")
-        gridLayout.addWidget(label_next, 0, 2, 1, 1)
-        find_close = QPushButton(widget)
-        find_close.setObjectName("find_close")
-        gridLayout.addWidget(find_close, 0, 3, 1, 1)
+        btn_pre = QPushButton('h', widget)
+        btn_pre.setToolTip(self.tr("pre"))
+        btn_pre.setObjectName("btn_pre")
+        gridLayout.addWidget(btn_pre, 0, 1, 1, 1)
+        btn_next = QPushButton('i', widget)
+        btn_next.setToolTip(self.tr("next"))
+        btn_next.setObjectName("btn_next")
+        gridLayout.addWidget(btn_next, 0, 2, 1, 1)
         lineEdit_replace = QLineEdit(widget)
-        lineEdit_replace.setObjectName("lineEdit_replace")
+        lineEdit_replace.setPlaceholderText(self.tr("replace") + '...')
+        lineEdit_replace.setObjectName("LineEditReplace")
         gridLayout.addWidget(lineEdit_replace, 1, 0, 1, 1)
-        label_find = QLabel(widget)
-        label_find.setObjectName("label_find")
-        gridLayout.addWidget(label_find, 1, 1, 1, 1)
-        label_replace = QLabel(widget)
-        label_replace.setObjectName("label_4")
-        gridLayout.addWidget(label_replace, 1, 2, 1, 1)
+        btn_replace = QPushButton("P", widget)
+        btn_replace.setToolTip(self.tr("replace"))
+        btn_replace.setObjectName("btn_replace")
+        gridLayout.addWidget(btn_replace, 1, 1, 1, 1)
+        btn_replace_all = QPushButton("R", widget)
+        btn_replace_all.setToolTip(self.tr("replace all"))
+        btn_replace_all.setObjectName("btn_replace_all")
+        gridLayout.addWidget(btn_replace_all, 1, 2, 1, 1)
+
+        widget.hide()
+
+    def find_replace(self):
+        if self.fr_widget.isHidden():
+            self.fr_widget.show()
+            self.fr_widget.findChild(QWidget, "LineEditFind").setFocus()
+            self.lineEdit_find_textChanged(self.lineEdit_find.text())
+        else:
+            self.fr_widget.hide()
+            self.editor.cancelFind()
 
     def text_edit_textChanged(self):
         text = self.editor.text()
@@ -194,6 +233,28 @@ class Qss(FramelessWindow):
         text_painter.end()
         p = QPixmap.fromImage(image)
         self.setWindowIcon(QIcon(p))
+
+    def lineEdit_find_textChanged(self, text):
+        self.editor.findFirst(text, True, False, True, True)
+
+    def findText(self, forward):
+        text_to_find = self.lineEdit_find.text()
+
+        if forward:
+            line, index = self.editor.getSelection()[2:]
+        else:
+            line, index = self.editor.getSelection()[:2]
+
+        state_ = (
+            True, False,
+            False, False,
+            forward, line, index,
+            False, False,
+        )
+
+        self.text_to_find = text_to_find
+        self.state_ = state_
+        self.editor.findFirst(text_to_find, *state_)
 
     def closeEvent(self, event):
         if self.qss_file:

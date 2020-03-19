@@ -4,12 +4,14 @@
 # @File    : frameless_window.py
 
 from PyQt5.Qsci import QsciScintilla
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, pyqtSignal
 from PyQt5.QtGui import QPainter, QEnterEvent, QPen, QColor
 from PyQt5.QtWidgets import QDialog, QStyleOption, QStyle
 
 
 class FramelessWindow(QDialog):
+    resized = pyqtSignal()
+
     def __init__(self):
         super(FramelessWindow, self).__init__()
         self.margin = 4
@@ -180,6 +182,7 @@ class FramelessWindow(QDialog):
     def resizeEvent(self, event):
         super(FramelessWindow, self).resizeEvent(event)
         self._get_rect()
+        self.resized.emit()
 
     def _get_rect(self):
         width, height = self.width(), self.height()
@@ -201,7 +204,7 @@ class FramelessWindow(QDialog):
         self.setCursor(Qt.ArrowCursor)
 
     def paintEvent(self, event):
-        '''无边框透明后圆角问题'''
+        """无边框透明后圆角问题"""
         super(FramelessWindow, self).paintEvent(event)
         opt = QStyleOption()
         opt.initFrom(self)
