@@ -7,24 +7,28 @@ import os
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QKeySequence, QIcon, QPixmap, QImage, QPainter, QFont, QColor
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
-    QShortcut, QLabel, QVBoxLayout
+    QShortcut, QLabel, QVBoxLayout, QGridLayout, QLineEdit
 
+from pyqss.tr import init_language
 from pyqss.widgets.frameless_window import FramelessWindow
 from pyqss.sci.editor import QssEditor
 
-__version__ = '0.0.5'
+__version__ = '0.9.1'
 
 
 class Qss(FramelessWindow):
-    def __init__(self, custom_widget=None):
+    def __init__(self, custom_widget=None, language='zh'):
         super(Qss, self).__init__()
         self.custom_widget = custom_widget
-        self.setWindowTitle('QSS编辑器')
+        # 初始化语言
+        self.tr = init_language(language)
+
         self.resize(600, 400)
 
         self.qss_file = None
         self.qss_name = 'unknown'
-        self.title = 'QSS编辑器'
+        self.title = self.tr("QSS Editor")
+        self.setWindowTitle(self.title)
         self.setup_ui()
         self.set_icon()
 
@@ -36,6 +40,12 @@ class Qss(FramelessWindow):
         # 加载样式
         with open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r') as f:
             self.setStyleSheet(f.read())
+
+        # 获取焦点
+        self.editor.setFocus()
+
+        # 查找替换
+        QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
 
     def setup_ui(self):
         widget = QWidget(self)
@@ -59,11 +69,11 @@ class Qss(FramelessWindow):
         label_icon.setObjectName('LabelIcon')
         label_icon.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         thl.addWidget(label_icon)
-        pushButton_open = QPushButton('打开', title_widget)
+        pushButton_open = QPushButton(self.tr('open'), title_widget)
         pushButton_open.setMouseTracking(True)
         pushButton_open.setObjectName('btn_open')
         thl.addWidget(pushButton_open)
-        pushButton_save = QPushButton('保存', title_widget)
+        pushButton_save = QPushButton(self.tr('save'), title_widget)
         pushButton_save.setMouseTracking(True)
         pushButton_save.setObjectName('btn_save')
         thl.addWidget(pushButton_save)
@@ -99,6 +109,35 @@ class Qss(FramelessWindow):
         # 快捷键
         shortcut_save = QShortcut(QKeySequence.Save, self)
         shortcut_save.activated.connect(self.shortcut_save_activated)
+
+    def find_replace(self):
+        print('find')
+        widget = QWidget(self)
+        widget.setGeometry(self.width(), 40)
+        widget.setObjectName("FindReplace")
+        gridLayout = QGridLayout(widget)
+        gridLayout.setContentsMargins(0, 0, 0, 0)
+        lineEdit_find = QLineEdit(widget)
+        lineEdit_find.setObjectName("lineEdit_find")
+        gridLayout.addWidget(lineEdit_find, 0, 0, 1, 1)
+        label_pre = QLabel('f', widget)
+        label_pre.setObjectName("label_pre")
+        gridLayout.addWidget(label_pre, 0, 1, 1, 1)
+        label_next = QLabel('g', widget)
+        label_next.setObjectName("label_2")
+        gridLayout.addWidget(label_next, 0, 2, 1, 1)
+        find_close = QPushButton(widget)
+        find_close.setObjectName("find_close")
+        gridLayout.addWidget(find_close, 0, 3, 1, 1)
+        lineEdit_replace = QLineEdit(widget)
+        lineEdit_replace.setObjectName("lineEdit_replace")
+        gridLayout.addWidget(lineEdit_replace, 1, 0, 1, 1)
+        label_find = QLabel(widget)
+        label_find.setObjectName("label_find")
+        gridLayout.addWidget(label_find, 1, 1, 1, 1)
+        label_replace = QLabel(widget)
+        label_replace.setObjectName("label_4")
+        gridLayout.addWidget(label_replace, 1, 2, 1, 1)
 
     def text_edit_textChanged(self):
         text = self.editor.text()

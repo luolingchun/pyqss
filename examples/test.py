@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     from pyqss import Qss
 
-    qss = Qss(window)
+    qss = Qss(window, language='en')
     qss.show()
 
     app.exec_()
