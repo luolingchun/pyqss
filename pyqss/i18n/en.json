@@ -3,5 +3,8 @@
   "save": "save",
   "QSS Editor": "QSS Editor",
   "find": "find",
-  "replace": "replace"
+  "replace": "replace",
+  "replace all": "replace all",
+  "pre": "pre",
+  "next": "next"
 }

@@ -3,5 +3,8 @@
   "save": "保存",
   "QSS Editor": "QSS 编辑器",
   "find": "查找",
-  "replace": "替换"
+  "replace": "替换",
+  "replace all": "替换全部",
+  "pre": "上一个",
+  "next": "下一个"
 }

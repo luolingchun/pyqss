@@ -1,6 +1,6 @@
 # pyqss
 
-English|[简体中文](README.md)
+English | [简体中文](README.md)
 
 A simple QSS editor
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     main_window = MainWindow()
     main_window.show()
     # register  Mainwindow 
-    qss = Qss(main_window)
+    qss = Qss(main_window, language='en')
     qss.show()
 
     app.exec_()
