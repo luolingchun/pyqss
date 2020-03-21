@@ -5,7 +5,7 @@
 
 from PyQt5.Qsci import QsciScintilla
 from PyQt5.QtCore import Qt, QPoint, pyqtSignal
-from PyQt5.QtGui import QPainter, QEnterEvent, QPen, QColor
+from PyQt5.QtGui import QPainter, QEnterEvent, QPen, QColor, QMouseEvent
 from PyQt5.QtWidgets import QDialog, QStyleOption, QStyle
 
 
@@ -217,5 +217,7 @@ class FramelessWindow(QDialog):
     def eventFilter(self, obj, event):
         if isinstance(obj, QsciScintilla) and isinstance(event, QEnterEvent):
             self.setCursor(Qt.ArrowCursor)
+        if obj.objectName() == 'FRWidget' and isinstance(event, QMouseEvent):
+            return True
 
         return QDialog.eventFilter(self, obj, event)

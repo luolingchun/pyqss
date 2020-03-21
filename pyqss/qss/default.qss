@@ -22,7 +22,7 @@
 	border:0px solid gray;
 	border-radius:10px;
 	min-height:60px;
-	background-color:rgba(60, 63, 65, 180);
+	background-color:rgba(60, 63, 65, 255);
 }
 
 #FRWidget>QLineEdit{
@@ -33,7 +33,7 @@
 	font-size:14px;
 	font-family:"Microsoft Yahei";
 	min-height:20px;
-	background-color:rgba(69, 73, 74, 180);
+	background-color:rgba(69, 73, 74, 255);
 }
 
 #FRWidget>QLineEdit:focus{

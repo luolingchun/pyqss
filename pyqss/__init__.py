@@ -4,7 +4,6 @@
 # @File    : __init__.py
 import os
 
-from PyQt5.Qsci import QsciScintillaBase, QsciScintilla
 from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QKeySequence, QIcon, QPixmap, QImage, QPainter, QFont, QColor
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
@@ -61,6 +60,8 @@ class Qss(FramelessWindow):
         self.lineEdit_find.textChanged.connect(self.lineEdit_find_textChanged)
         self.btn_pre.clicked.connect(lambda: self.findText(forward=False))
         self.btn_next.clicked.connect(lambda: self.findText(forward=True))
+        self.btn_replace.clicked.connect(self.btn_replace_clicked)
+        self.btn_replace_all.clicked.connect(self.btn_replace_all_clicked)
 
     def setup_ui(self):
         widget = QWidget(self)
@@ -135,7 +136,7 @@ class Qss(FramelessWindow):
             widget.resize(self.width() - 32 * self.margin, 40)
 
         widget = QWidget(self)
-        widget.setMouseTracking(False)
+        widget.installEventFilter(self)
         widget.setObjectName('FRWidget')
         widget.setGeometry(self.x() + 16 * self.margin, self.y() + 60,
                            self.width() - 32 * self.margin, 40)
@@ -255,6 +256,21 @@ class Qss(FramelessWindow):
         self.text_to_find = text_to_find
         self.state_ = state_
         self.editor.findFirst(text_to_find, *state_)
+
+    def btn_replace_clicked(self):
+        self.editor.beginUndoAction()
+        selected_text = self.editor.selectedText()
+        if selected_text == self.lineEdit_find.text():
+            self.editor.replaceSelectedText(self.lineEdit_replace.text())
+        self.editor.endUndoAction()
+
+    def btn_replace_all_clicked(self):
+        # TODO:不能撤销
+        self.editor.beginUndoAction()
+        text = self.editor.text()
+        new_text = text.replace(self.lineEdit_find.text(), self.lineEdit_replace.text())
+        self.editor.setText(new_text)
+        self.editor.endUndoAction()
 
     def closeEvent(self, event):
         if self.qss_file:

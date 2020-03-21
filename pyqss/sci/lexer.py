@@ -17,11 +17,12 @@ class QsciLexerQSS(QsciLexerCustom):
     }
     styles = {
         "Default": 0,
-        "Widgets": 1,
-        "Properties": 2,
-        "Numbers": 3,
-        'Colors': 4,
+        "Widget": 1,
+        "Property": 2,
+        "Number": 3,
+        'Color': 4,
         'Comment': 5,
+        "String": 6,
     }
 
     def __init__(self, parent=None):
@@ -32,11 +33,12 @@ class QsciLexerQSS(QsciLexerCustom):
 
         # 字体颜色
         self.setColor(QColor(255, 255, 255), self.styles["Default"])
-        self.setColor(QColor(165, 197, 39), self.styles["Widgets"])
-        self.setColor(QColor(102, 217, 239), self.styles["Properties"])
-        self.setColor(QColor(174, 129, 255), self.styles["Numbers"])
-        self.setColor(QColor(104, 232, 104), self.styles["Colors"])
+        self.setColor(QColor(165, 197, 39), self.styles["Widget"])
+        self.setColor(QColor(102, 217, 239), self.styles["Property"])
+        self.setColor(QColor(174, 129, 255), self.styles["Number"])
+        self.setColor(QColor(104, 232, 104), self.styles["Color"])
         self.setColor(QColor(117, 113, 94), self.styles["Comment"])
+        self.setColor(QColor(100, 150, 100), self.styles["String"])
 
         self.widgets = WIDGET_LIST
 
@@ -44,15 +46,17 @@ class QsciLexerQSS(QsciLexerCustom):
         if style == 0:
             return 'Default'
         elif style == 1:
-            return 'Widgets'
+            return 'Widget'
         elif style == 2:
-            return 'Properties'
+            return 'Property'
         elif style == 3:
-            return 'Numbers'
+            return 'Number'
         elif style == 4:
-            return 'Colors'
+            return 'Color'
         elif style == 5:
             return 'Comment'
+        elif style == 6:
+            return 'String'
 
     def language(self):
         return "QSS"
@@ -64,7 +68,7 @@ class QsciLexerQSS(QsciLexerCustom):
 
         self.startStyling(start)
         splitter = re.compile(
-            r"(\{\.|\.\}|\#|\'|\"\"\"|\n|\d|\w+-\w+-\w+-\w+-\w+|\w+-\w+-\w+-\w+|\w+-\w+-\w+|\w+-\w+|\w+|\W)")
+            r"(\{\.|\.\}|\#|\'|\"\"\"|\n|\".*\"|\d|\w+-\w+-\w+-\w+-\w+|\w+-\w+-\w+-\w+|\w+-\w+-\w+|\w+-\w+|\w+|\W)")
         text = editor.text()[start:end]
         tokens = [(token, len(bytearray(token, "utf-8"))) for token in splitter.findall(text)]
         if start != 0:
@@ -100,13 +104,15 @@ class QsciLexerQSS(QsciLexerCustom):
 
             # Sprecial token styling
             if token_text in self.widgets:
-                self.setStyling(token_length, self.styles["Widgets"])
+                self.setStyling(token_length, self.styles["Widget"])
             elif token_text in PROPERTY_LIST:
-                self.setStyling(token[1], self.styles["Properties"])
+                self.setStyling(token_length, self.styles["Property"])
             elif token_text.isdigit():
-                self.setStyling(token[1], self.styles["Numbers"])
+                self.setStyling(token_length, self.styles["Number"])
             elif token_text in COLOR_LIST:
-                self.setStyling(token[1], self.styles["Colors"])
+                self.setStyling(token_length, self.styles["Color"])
+            elif token_text.startswith('"') and token_text.endswith('"'):
+                self.setStyling(token_length, self.styles["String"])
             else:
                 # Style with the default style
                 self.setStyling(token_length, self.styles["Default"])
