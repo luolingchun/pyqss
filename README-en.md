@@ -16,11 +16,16 @@ pip install pyqss
 - [x] Syntax highlighting
 - [x] Automatic completion
 - [x] i18n
-- [ ] Find and replace
+- [x] Find and replace
 - [ ] File drag and drop
 - [ ] Automatic adsorption
 
 ## Usage
+
+**shortcut keys**:
+
+- `Ctrl+/`：comment
+- `Ctrl+F`：find and replace
 
 Import QSS from pyqss and register the MainWindow into QSS, and enjoy it：[example](./examples/test.py)
 
@@ -40,4 +45,8 @@ if __name__ == '__main__':
     app.exec_()
 ```
 ## Screenshot
-- todo
+![show](./screen/show.png)
+
+![comment](./screen/comment.gif)
+
+![find_replace](./screen/find_replace.gif)

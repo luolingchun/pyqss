@@ -4,7 +4,7 @@
 # @File    : editor.py
 
 from PyQt5.Qsci import QsciScintilla, QsciAPIs
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtGui import QColor, QKeySequence
 from PyQt5.QtWidgets import QShortcut, QApplication
 
@@ -139,4 +139,15 @@ class QssEditor(QsciScintilla):
             # 注释快捷键，Ctrl+/
             toggle_commenting(self)
             return
+        # elif key == Qt.Key_Return:
+            # 括号缩进,TODO
+            # pos = self.getCursorPosition()
+            # pos_text = self.wordCharacters()
+            # print(pos_text)
+            # super(QssEditor, self).keyPressEvent(event)
+            # if pos_text and pos_text[-2:] == '{}':
+            #     self.insert("\n")
+            #     self.insert('	')
+            #     self.setCursorPosition(pos[0], pos[1] + 2)
+            # return
         super(QssEditor, self).keyPressEvent(event)

@@ -16,11 +16,16 @@ pip install pyqss
 - [x] 语法高亮
 - [x] 自动补全
 - [x] 国际化
-- [ ] 查找替换
+- [x] 查找替换
 - [ ] 文件拖拽
 - [ ] 自动吸附
 
 ## 使用方法
+
+**快捷键：**
+
+- `Ctrl+/`：注释
+- `Ctrl+F`：查找替换
 
 从pyqss导入Qss，将主界面注册到Qss中，即可使用：[示例](./examples/test.py)
 
@@ -40,5 +45,9 @@ if __name__ == '__main__':
     app.exec_()
 ```
 ## 截图
-- todo
 
+![show](./screen/show.png)
+
+![comment](./screen/comment.gif)
+
+![find_replace](./screen/find_replace.gif)

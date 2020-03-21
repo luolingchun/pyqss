@@ -4,14 +4,17 @@
 
 
 if __name__ == '__main__':
-    from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
+    from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 
     app = QApplication([])
     window = QMainWindow()
-    pushbutton = QPushButton('test', parent=window)
-    pushbutton.setObjectName('PPPP')
+    pushbutton = QPushButton('button', window)
+    pushbutton.setObjectName('button')
     pushbutton.move(20, 20)
+    label = QLabel("label", window)
+    label.move(20, 80)
     window.show()
+    window.resize(300, 400)
 
     from pyqss import Qss
 
