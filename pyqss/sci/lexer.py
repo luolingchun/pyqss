@@ -38,7 +38,7 @@ class QsciLexerQSS(QsciLexerCustom):
         self.setColor(QColor(174, 129, 255), self.styles["Number"])
         self.setColor(QColor(104, 232, 104), self.styles["Color"])
         self.setColor(QColor(117, 113, 94), self.styles["Comment"])
-        self.setColor(QColor(100, 150, 100), self.styles["String"])
+        self.setColor(QColor(230, 219, 116), self.styles["String"])
 
         self.widgets = WIDGET_LIST
 
@@ -103,13 +103,13 @@ class QsciLexerQSS(QsciLexerCustom):
                     continue
 
             # Sprecial token styling
-            if token_text in self.widgets:
+            if token_text in self.widgets or token_text in PSEUDO_STATE_LIST or token_text in SUB_CONTROL_LIST:
                 self.setStyling(token_length, self.styles["Widget"])
             elif token_text in PROPERTY_LIST:
                 self.setStyling(token_length, self.styles["Property"])
             elif token_text.isdigit():
                 self.setStyling(token_length, self.styles["Number"])
-            elif token_text in COLOR_LIST:
+            elif token_text in COLOR_LIST or token_text in PROPERTY_TYPE_LIST:
                 self.setStyling(token_length, self.styles["Color"])
             elif token_text.startswith('"') and token_text.endswith('"'):
                 self.setStyling(token_length, self.styles["String"])

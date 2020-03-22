@@ -13,7 +13,7 @@ from pyqss.tr import init_language
 from pyqss.widgets.frameless_window import FramelessWindow
 from pyqss.sci.editor import QssEditor
 
-__version__ = '1.0'
+__version__ = '1.0.1-dev'
 
 
 class Qss(FramelessWindow):
@@ -285,5 +285,6 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     qss = Qss()
+    qss.editor.add_apis(qss)
     qss.show()
     app.exec_()

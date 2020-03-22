@@ -71,7 +71,7 @@ class QssEditor(QsciScintilla):
         self.setLexer(self.lexer)
         # API
         self.api = QsciAPIs(self.lexer)
-        self.api_list = WIDGET_LIST + PROPERTY_LIST + PSEUDO_STATE_LIST + COLOR_LIST + SUB_CONTROL_LIST
+        self.api_list = API_LIST
         for p in PROPERTY_LIST:
             self.api_list.extend(p.split('-'))
 
@@ -102,11 +102,9 @@ class QssEditor(QsciScintilla):
         self.setEdgeMode(QsciScintilla.EDGE_NONE)  # 行字数超过50时什么也不做，默认背景标记为绿色
 
         QShortcut(QKeySequence("Ctrl+0"), self, self.test)
-        QShortcut(QKeySequence("Ctrl+1"), self, self.findNext)
 
     def test(self):
         print('test')
-        self.findFirst('o', True, False, True, True)
 
     def onLinesChanged(self):
         self.setMarginWidth(0, self.fontMetrics().width(str(self.lines())) + 18)
@@ -140,14 +138,14 @@ class QssEditor(QsciScintilla):
             toggle_commenting(self)
             return
         # elif key == Qt.Key_Return:
-            # 括号缩进,TODO
-            # pos = self.getCursorPosition()
-            # pos_text = self.wordCharacters()
-            # print(pos_text)
-            # super(QssEditor, self).keyPressEvent(event)
-            # if pos_text and pos_text[-2:] == '{}':
-            #     self.insert("\n")
-            #     self.insert('	')
-            #     self.setCursorPosition(pos[0], pos[1] + 2)
-            # return
+        # 括号缩进,TODO
+        # pos = self.getCursorPosition()
+        # pos_text = self.wordCharacters()
+        # print(pos_text)
+        # super(QssEditor, self).keyPressEvent(event)
+        # if pos_text and pos_text[-2:] == '{}':
+        #     self.insert("\n")
+        #     self.insert('	')
+        #     self.setCursorPosition(pos[0], pos[1] + 2)
+        # return
         super(QssEditor, self).keyPressEvent(event)
