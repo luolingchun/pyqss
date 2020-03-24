@@ -17,7 +17,7 @@ pip install pyqss
 - [x] Automatic completion
 - [x] i18n
 - [x] Find and replace
-- [ ] File drag and drop
+- [x] File drag and drop
 - [ ] Automatic adsorption
 
 ## Usage

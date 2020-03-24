@@ -63,6 +63,8 @@ class Qss(FramelessWindow):
         self.btn_replace.clicked.connect(self.btn_replace_clicked)
         self.btn_replace_all.clicked.connect(self.btn_replace_all_clicked)
 
+        self.editor.opened.connect(self.open_qss)
+
     def setup_ui(self):
         widget = QWidget(self)
         widget.setObjectName('TopWidget')
@@ -189,12 +191,15 @@ class Qss(FramelessWindow):
     def pushButton_open_clicked(self):
         qss_file, ext = QFileDialog.getOpenFileName(self, '打开qss', '', '*.qss')
         if qss_file:
-            with open(qss_file, 'r') as f:
-                self.editor.clear()
-                self.editor.append(f.read())
-            self.qss_file = qss_file
-            self.qss_name = str(os.path.basename(qss_file).split('.')[0])
-            self.label_title.setText(self.title + '-' + self.qss_name)
+            self.open_qss(qss_file)
+
+    def open_qss(self, qss_file):
+        with open(qss_file, 'r') as f:
+            self.editor.clear()
+            self.editor.append(f.read())
+        self.qss_file = qss_file
+        self.qss_name = str(os.path.basename(qss_file).split('.')[0])
+        self.label_title.setText(self.title + '-' + self.qss_name)
 
     def pushButton_save_clicked(self):
         if self.qss_file:
