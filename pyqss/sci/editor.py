@@ -2,9 +2,10 @@
 # @Time    : 2019/4/11 14:01
 # @Author  : llc
 # @File    : editor.py
+import os
 
 from PyQt5.Qsci import QsciScintilla, QsciAPIs
-from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtCore import Qt, QPoint, QUrl, pyqtSignal
 from PyQt5.QtGui import QColor, QKeySequence
 from PyQt5.QtWidgets import QShortcut, QApplication
 
@@ -14,6 +15,8 @@ from .keywords import *
 
 
 class QssEditor(QsciScintilla):
+    opened = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super(QssEditor, self).__init__(parent=parent)
 
@@ -149,3 +152,30 @@ class QssEditor(QsciScintilla):
         #     self.setCursorPosition(pos[0], pos[1] + 2)
         # return
         super(QssEditor, self).keyPressEvent(event)
+
+    def dragEnterEvent(self, event):
+        data = event.mimeData()
+        if data.hasUrls():
+            url = QUrl(data.text())
+            if url.isLocalFile() and url.path().endswith(".qss"):
+                event.accept()
+            else:
+                event.ignore()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        data = event.mimeData()
+        if data.hasUrls():
+            url = QUrl(data.text())
+            if url.isLocalFile() and url.path().endswith(".qss"):
+                event.accept()
+                qss_file = url.path().lstrip('/')
+                with open(url.path().lstrip('/'), 'r') as f:
+                    qss_text = f.read()
+                self.setText(qss_text)
+                self.opened.emit(qss_file)
+            else:
+                event.ignore()
+        else:
+            event.ignore()
