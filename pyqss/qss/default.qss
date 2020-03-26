@@ -2,8 +2,8 @@
 #LabelIcon{
 	border-top-left-radius:5px;
 	color:green;
-	min-width:40px;
-	min-height:40px;
+	min-width:46px;
+	min-height:46px;
 	font-size:30px;
 	font-family:"Microsoft Yahei";
 	background:rgba(39, 40, 34, 255);
@@ -14,6 +14,74 @@
 	border-radius:5px;
 	background-color:rgba(39, 40, 34, 255);
 }
+
+/*title*/
+#Title{
+	color:white;
+	font-size:16px;
+	font-family:"Microsoft Yahei";
+}
+
+/*open and save*/
+#btn_open,#btn_save{
+	font-family:"Microsoft Yahei";
+}
+
+#btn_attach{
+	border:0px;
+	border-radius:20px;
+	color:white;
+	font-size:14px;
+	font-family:"Webdings";
+	min-width:40px;
+	min-height:40px;
+}
+
+#btn_attach:checked{
+	color:rgb(0,128,0);
+}
+
+#btn_open,#btn_save{
+	border:0px;
+	border-radius:20px;
+	min-width:60px;
+	min-height:40px;
+	color:white;
+	font-size:14px;
+}
+
+/*min and close*/
+#btn_min,#btn_close{
+	border:0px;
+	border-radius:20px;
+	min-width:40px;
+	min-height:40px;
+	color:white;
+	font-size:14px;
+	font-family:"Webdings";
+}
+
+#btn_close{
+	margin-right:3px;
+}
+
+#btn_close:hover{
+	background-color:rgba(240, 104, 36,255);
+}
+
+#btn_open:pressed,#btn_save:pressed,#btn_min:pressed,#btn_attach:pressed{
+	background-color:rgba(81,81,81,200);
+}
+
+#btn_close:pressed{
+	background-color:rgba(240, 104, 36,100);
+}
+
+QPushButton:hover
+{
+    background-color:rgba(81 , 81 , 81,100);
+}
+
 /*find and replace*/
 #FRWidget{
 	border:0px solid gray;
@@ -24,7 +92,8 @@
 
 #FRWidget>QLineEdit{
 	border:1px solid gray;
-	border-radius:2px;
+	min-height:20px;
+	border-radius:5px;
 	color:darkgray;
 	margin-left:10px;
 	font-size:14px;
@@ -34,27 +103,29 @@
 }
 
 #FRWidget>QLineEdit:focus{
-	border:1px solid gray;
 	border-color:rgb(0, 120, 215);
 }
 
 #FRWidget>QLineEdit:hover{
-	border:1px solid gray;
 	border-color:rgb(0, 120, 215);
 }
 
 #FRWidget>QPushButton{
 	border:0px;
-	width:24px;
-	height:24px;
+	min-width:26px;
+	min-height:26px;
 	font-size:18px;
 	font-weight:bold;
 	color:darkgray;
 }
 
 #FRWidget>QPushButton:hover{
-	border-radius:4px;
-	background-color:rgb(81, 81, 81);
+	border-radius:13px;
+	background-color:rgba(81, 81, 81,150);
+}
+
+#FRWidget>QPushButton:pressed{
+	background-color:rgba(81, 81, 81,255);
 }
 
 #btn_pre,#btn_next{
@@ -77,37 +148,6 @@
 	margin-bottom:5px;
 }
 
-/*open and save*/
-#btn_open,#btn_save{
-	font-family:"Microsoft Yahei";
-}
-/*min and close*/
-#btn_min,#btn_close{
-	font-family:"Webdings";
-}
-
-#btn_open,#btn_save,#btn_min,#btn_close{
-	border:0px;
-	min-width:60px;
-	min-height:40px;
-	color:white;
-	font-size:14px;
-}
-
-#btn_open:hover,#btn_save:hover,#btn_min:hover{
-	background:#515151;
-}
-
-#btn_close:hover{
-	border-top-right-radius:5px;
-	background:rgb(240, 104, 36);
-}
-/*title*/
-#Title{
-	color:white;
-	font-size:16px;
-	font-family:"Microsoft Yahei";
-}
 /*editor*/
 #QssEditor{
 	border:0px;

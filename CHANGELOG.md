@@ -1,6 +1,12 @@
+## v1.1-20200326
+
+- Drag and drop
+- Auto-attach
+- Some optimization
+
 ## v1.0-20200321
 
-- find and replace
+- Find and replace
 - Some optimization
 
 ## v0.9.1-20200319

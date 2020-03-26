@@ -13,7 +13,7 @@ from pyqss.tr import init_language
 from pyqss.widgets.frameless_window import FramelessWindow
 from pyqss.sci.editor import QssEditor
 
-__version__ = '1.0.1-dev'
+__version__ = '1.1'
 
 
 class Qss(FramelessWindow):
@@ -36,6 +36,8 @@ class Qss(FramelessWindow):
 
         self.editor = self.findChild(QssEditor, "QssEditor")
         self.label_title = self.findChild(QLabel, "Title")
+        self.pushButton_attach = self.findChild(QPushButton, "btn_attach")
+
         self.fr_widget = self.findChild(QWidget, "FRWidget")
         self.lineEdit_find = self.fr_widget.findChild(QLineEdit, "LineEditFind")
         self.lineEdit_replace = self.fr_widget.findChild(QLineEdit, "LineEditReplace")
@@ -103,6 +105,14 @@ class Qss(FramelessWindow):
         thl.addWidget(label_title)
         s_item = QSpacerItem(214, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         thl.addItem(s_item)
+        pushButton_attach = QPushButton('~', title_widget)
+        pushButton_attach.setMouseTracking(True)
+        pushButton_attach.setCheckable(True)
+        pushButton_attach.setChecked(True)
+        pushButton_attach.setToolTip(self.tr("attach"))
+        pushButton_attach.setObjectName('btn_attach')
+        pushButton_attach.clicked.connect(self.pushButton_attach_clicked)
+        thl.addWidget(pushButton_attach)
         pushButton_min = QPushButton('0', title_widget)
         pushButton_min.setMouseTracking(True)
         pushButton_min.setObjectName('btn_min')
@@ -276,6 +286,24 @@ class Qss(FramelessWindow):
         new_text = text.replace(self.lineEdit_find.text(), self.lineEdit_replace.text())
         self.editor.setText(new_text)
         self.editor.endUndoAction()
+
+    def pushButton_attach_clicked(self, is_checked):
+        if is_checked:
+            self.move_custom_widget()
+
+    def moveEvent(self, event):
+        super(Qss, self).moveEvent(event)
+        if self.pushButton_attach.isChecked():
+            self.move_custom_widget()
+
+    def move_custom_widget(self):
+        if hasattr(self.custom_widget, "setGeometry"):
+            if self.custom_widget.isMaximized() or self.custom_widget.isFullScreen():
+                return
+            self.custom_widget.setGeometry(self.x() - self.custom_widget.width(),
+                                           self.y(),
+                                           self.custom_widget.width(),
+                                           self.custom_widget.height())
 
     def closeEvent(self, event):
         if self.qss_file:
