@@ -12,13 +12,13 @@ pip install pyqss
 
 ## Features
 
-- [x] Real-time Preview
+- [x] Live preview
 - [x] Syntax highlighting
-- [x] Automatic completion
+- [x] Auto-completion
 - [x] i18n
 - [x] Find and replace
 - [x] File drag and drop
-- [ ] Automatic adsorption
+- [x] Auto-attach
 
 ## Usage
 

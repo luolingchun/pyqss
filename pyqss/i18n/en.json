@@ -6,5 +6,6 @@
   "replace": "replace",
   "replace all": "replace all",
   "pre": "pre",
-  "next": "next"
+  "next": "next",
+  "attach": "attach"
 }

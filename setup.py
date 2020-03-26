@@ -7,7 +7,6 @@ from setuptools import setup, find_packages
 from pyqss import __version__
 
 long_description = """
-# pyqss
 
 A simple QSS editor
 
@@ -19,13 +18,13 @@ pip install pyqss
 
 ## Features
 
-- Real-time Preview
+- Live preview
 - Syntax highlighting
-- Automatic completion
+- Auto-completion
 - i18n
 - Find and replace
 - File drag and drop
-- Automatic adsorption
+- Auto-attach
 
 ## Usage
 
@@ -41,7 +40,7 @@ if __name__ == '__main__':
     main_window = MainWindow()
     main_window.show()
     # register  MainWindow 
-    qss = Qss(main_window)
+    qss = Qss(main_window, language='en')
     qss.show()
 
     app.exec_()
