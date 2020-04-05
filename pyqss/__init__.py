@@ -57,6 +57,7 @@ class Qss(FramelessWindow):
 
         # 查找替换
         QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
+        QShortcut(QKeySequence("Esc"), self, lambda: self.fr_widget.hide())
 
         # 信号和槽
         self.lineEdit_find.textChanged.connect(self.lineEdit_find_textChanged)
@@ -256,35 +257,37 @@ class Qss(FramelessWindow):
     def findText(self, forward):
         text_to_find = self.lineEdit_find.text()
 
+        cline, cindex = self.editor.getCursorPosition()
+        lineFrom, indexFrom, lineTo, indexTo = self.editor.getSelection()
+
         if forward:
-            line, index = self.editor.getSelection()[2:]
+            line = lineTo
+            index = indexTo
         else:
-            line, index = self.editor.getSelection()[:2]
+            if (lineFrom, indexFrom) == (-1, -1):
+                line = cline
+                index = cindex
+            else:
+                line = lineFrom
+                index = indexFrom
 
-        state_ = (
-            True, False,
-            False, False,
-            forward, line, index,
-            False, False,
-        )
-
-        self.text_to_find = text_to_find
-        self.state_ = state_
-        self.editor.findFirst(text_to_find, *state_)
+        return self.editor.findFirst(text_to_find, False, False, False, True, forward, line, index)
 
     def btn_replace_clicked(self):
-        self.editor.beginUndoAction()
-        selected_text = self.editor.selectedText()
-        if selected_text == self.lineEdit_find.text():
-            self.editor.replaceSelectedText(self.lineEdit_replace.text())
-        self.editor.endUndoAction()
+        if self.editor.hasSelectedText():
+            row1, line1, row2, line2 = self.editor.getSelection()
+            self.editor.setCursorPosition(row1, line1)
+        self.findText(True)
+        self.editor.replace(self.lineEdit_replace.text())
+        return True
 
     def btn_replace_all_clicked(self):
-        # TODO:不能撤销
         self.editor.beginUndoAction()
         text = self.editor.text()
-        new_text = text.replace(self.lineEdit_find.text(), self.lineEdit_replace.text())
-        self.editor.setText(new_text)
+        n = text.count(self.lineEdit_find.text(), False)
+        for i in range(n):
+            self.findText(True)
+            self.editor.replace(self.lineEdit_replace.text())
         self.editor.endUndoAction()
 
     def pushButton_attach_clicked(self, is_checked):
@@ -308,7 +311,7 @@ class Qss(FramelessWindow):
     def closeEvent(self, event):
         if self.qss_file:
             self.shortcut_save_activated()
-        event.accept()
+        super(Qss, self).closeEvent(event)
 
 
 if __name__ == '__main__':
