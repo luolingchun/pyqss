@@ -32,8 +32,7 @@ class QssEditor(QsciScintilla):
         # 边缘标记
         self.setEdgeMode(QsciScintilla.EdgeBackground)
         self.setEdgeColumn(50)
-        edge_color = QColor("#ff00ff00")
-        self.setEdgeColor(edge_color)
+        self.setEdgeColor(QColor("#ff00ff00"))
 
         # 缩进
         self.setTabWidth(4)
