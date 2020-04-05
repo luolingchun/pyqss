@@ -2,10 +2,9 @@
 # @Time    : 2019/4/11 14:01
 # @Author  : llc
 # @File    : editor.py
-import os
 
 from PyQt5.Qsci import QsciScintilla, QsciAPIs
-from PyQt5.QtCore import Qt, QPoint, QUrl, pyqtSignal
+from PyQt5.QtCore import Qt, QUrl, pyqtSignal
 from PyQt5.QtGui import QColor, QKeySequence
 from PyQt5.QtWidgets import QShortcut, QApplication
 
@@ -139,17 +138,33 @@ class QssEditor(QsciScintilla):
             # 注释快捷键，Ctrl+/
             toggle_commenting(self)
             return
-        # elif key == Qt.Key_Return:
-        # 括号缩进,TODO
-        # pos = self.getCursorPosition()
-        # pos_text = self.wordCharacters()
-        # print(pos_text)
-        # super(QssEditor, self).keyPressEvent(event)
-        # if pos_text and pos_text[-2:] == '{}':
-        #     self.insert("\n")
-        #     self.insert('	')
-        #     self.setCursorPosition(pos[0], pos[1] + 2)
-        # return
+        elif key == Qt.Key_BraceLeft:
+            # 自动添加右括号
+            self.insert("}")
+        elif key == Qt.Key_Backspace or key == Qt.Key_Delete:
+            line, index = self.getCursorPosition()
+            line_text = self.text(line)
+            # print(line_text)
+            if line_text[index - 1:index + 1].strip() == "{}":
+                self.setSelection(line, index - 1, line, index + 1)
+                self.removeSelectedText()
+                return
+        elif key == Qt.Key_Return:
+            # 括号自动缩进
+            line, index = self.getCursorPosition()
+            line_text = self.text(line)
+            # print(line_text)
+            if line_text[index - 1::].strip() == "{}":
+                super(QssEditor, self).keyPressEvent(event)
+                self.insert("\n")
+                self.indent(line + 1)
+                self.setCursorPosition(line + 1, 1)
+                return
+            elif line_text[index - 1::].strip() == "{":
+                super(QssEditor, self).keyPressEvent(event)
+                self.indent(line + 1)
+                self.setCursorPosition(line + 1, 1)
+                return
         super(QssEditor, self).keyPressEvent(event)
 
     def dragEnterEvent(self, event):
