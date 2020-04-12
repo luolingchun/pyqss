@@ -1,3 +1,8 @@
+## v1.2-20200412
+
+- bracketed indent
+- Some optimization
+
 ## v1.1-20200326
 
 - Drag and drop
