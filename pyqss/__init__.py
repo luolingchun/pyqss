@@ -164,7 +164,7 @@ class Qss(QssWindow):
     def btn_replace_all_clicked(self):
         self.editor.beginUndoAction()
         text = self.editor.text()
-        n = text.count(self.fr_widget.le_replace.text(), False)
+        n = text.count(self.fr_widget.le_find.text(), False)
         for i in range(n):
             self.find_text(True)
             self.editor.replace(self.fr_widget.le_replace.text())
