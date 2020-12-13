@@ -4,190 +4,86 @@
 # @File    : __init__.py
 import os
 
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QKeySequence, QIcon, QPixmap, QImage, QPainter, QFont, QColor
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QFileDialog, \
-    QShortcut, QLabel, QVBoxLayout, QGridLayout, QLineEdit
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QKeySequence, QEnterEvent
+from PyQt5.QtWidgets import QFileDialog, \
+    QShortcut, QMainWindow
 
 from pyqss.tr import init_language
-from pyqss.widgets.frameless_window import FramelessWindow
-from pyqss.sci.editor import QssEditor
 
-__version__ = '1.2'
+__version__ = '1.3'
+
+from widgets.find_replace import FRWidget
+
+from widgets.main import QssWindow
 
 
-class Qss(FramelessWindow):
+class Qss(QssWindow):
     def __init__(self, custom_widget=None, language='zh'):
         super(Qss, self).__init__()
         self.custom_widget = custom_widget
         # 初始化语言
         self.tr = init_language(language)
-
+        # 设置窗口大小
         self.resize(600, 400)
-        self.text_to_find = ''
-        self.state_ = tuple()
 
         self.qss_file = None
         self.qss_name = 'unknown'
         self.title = self.tr("QSS Editor")
         self.setWindowTitle(self.title)
-        self.setup_ui()
-        self.set_icon()
-
-        self.editor = self.findChild(QssEditor, "QssEditor")
-        self.label_title = self.findChild(QLabel, "Title")
-        self.pushButton_attach = self.findChild(QPushButton, "btn_attach")
-
-        self.fr_widget = self.findChild(QWidget, "FRWidget")
-        self.lineEdit_find = self.fr_widget.findChild(QLineEdit, "LineEditFind")
-        self.lineEdit_replace = self.fr_widget.findChild(QLineEdit, "LineEditReplace")
-        self.btn_pre = self.fr_widget.findChild(QPushButton, "btn_pre")
-        self.btn_next = self.fr_widget.findChild(QPushButton, "btn_next")
-        self.btn_replace = self.fr_widget.findChild(QPushButton, "btn_replace")
-        self.btn_replace_all = self.fr_widget.findChild(QPushButton, "btn_replace_all")
-
+        self.btn_open.setText(self.tr('open'))
+        self.btn_save.setText(self.tr('save'))
+        # 添加api
         self.editor.add_apis(self.custom_widget)
+
+        # 获取焦点
+        self.editor.setFocus()
+        self.editor.installEventFilter(self)
+
+        # 快捷键
+        shortcut_save = QShortcut(QKeySequence.Save, self)
+        shortcut_save.activated.connect(self.shortcut_save_activated)
+        QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
+        QShortcut(QKeySequence("Esc"), self, lambda: self.fr_widget.hide())
+
+        # 信号和槽
+        self.btn_open.clicked.connect(self.btn_open_clicked)
+        self.btn_save.clicked.connect(self.btn_save_clicked)
+        self.btn_attach.clicked.connect(self.btn_attach_clicked)
+        self.btn_min.clicked.connect(self.showMinimized)
+        self.btn_close.clicked.connect(self.close)
+
+        self.editor.textChanged.connect(self.text_edit_textChanged)
+        self.editor.opened.connect(self.open_qss)
 
         # 加载样式
         with open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r') as f:
             self.setStyleSheet(f.read())
 
-        # 获取焦点
-        self.editor.setFocus()
+        # 初始化查找替换
+        self.fr_widget = None
+        self.init_fr_widget()
 
-        # 查找替换
-        QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
-        QShortcut(QKeySequence("Esc"), self, lambda: self.fr_widget.hide())
+    def init_fr_widget(self):
+        self.fr_widget = FRWidget(parent=self)
+        self.fr_widget.hide()
+        self.fr_widget.setGeometry(50, 50, self.width() - 100, 40)
+        self.fr_widget.le_find.textChanged.connect(self.le_find_textChanged)
+        self.fr_widget.btn_pre.clicked.connect(lambda: self.find_text(forward=False))
+        self.fr_widget.btn_next.clicked.connect(lambda: self.find_text(forward=True))
+        self.fr_widget.btn_replace.clicked.connect(self.btn_replace_clicked)
+        self.fr_widget.btn_replace_all.clicked.connect(self.btn_replace_all_clicked)
 
-        # 信号和槽
-        self.lineEdit_find.textChanged.connect(self.lineEdit_find_textChanged)
-        self.btn_pre.clicked.connect(lambda: self.findText(forward=False))
-        self.btn_next.clicked.connect(lambda: self.findText(forward=True))
-        self.btn_replace.clicked.connect(self.btn_replace_clicked)
-        self.btn_replace_all.clicked.connect(self.btn_replace_all_clicked)
+        self.resized.connect(self.resize_fr)
 
-        self.editor.opened.connect(self.open_qss)
-
-    def setup_ui(self):
-        widget = QWidget(self)
-        widget.setObjectName('TopWidget')
-        widget.setMouseTracking(True)
-        hl = QHBoxLayout(self)
-        hl.addWidget(widget)
-        hl.setContentsMargins(self.margin, self.margin, self.margin, self.margin)
-        vl = QVBoxLayout(widget)
-        vl.setSpacing(0)
-        vl.setContentsMargins(0, 0, 0, 0)
-        # 标题组件
-        title_widget = QWidget(widget)
-        title_widget.setMouseTracking(True)
-
-        thl = QHBoxLayout(title_widget)
-        thl.setContentsMargins(0, 0, 0, 0)
-        thl.setSpacing(0)
-        label_icon = QLabel('Q', title_widget)
-        label_icon.setMouseTracking(True)
-        label_icon.setObjectName('LabelIcon')
-        label_icon.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-        thl.addWidget(label_icon)
-        pushButton_open = QPushButton(self.tr('open'), title_widget)
-        pushButton_open.setMouseTracking(True)
-        pushButton_open.setObjectName('btn_open')
-        thl.addWidget(pushButton_open)
-        pushButton_save = QPushButton(self.tr('save'), title_widget)
-        pushButton_save.setMouseTracking(True)
-        pushButton_save.setObjectName('btn_save')
-        thl.addWidget(pushButton_save)
-        s_item = QSpacerItem(214, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-        thl.addItem(s_item)
-        label_title = QLabel(self.title, title_widget)
-        label_title.setMouseTracking(True)
-        label_title.setObjectName('Title')
-        thl.addWidget(label_title)
-        s_item = QSpacerItem(214, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-        thl.addItem(s_item)
-        pushButton_attach = QPushButton('~', title_widget)
-        pushButton_attach.setMouseTracking(True)
-        pushButton_attach.setCheckable(True)
-        pushButton_attach.setChecked(True)
-        pushButton_attach.setToolTip(self.tr("attach"))
-        pushButton_attach.setObjectName('btn_attach')
-        pushButton_attach.clicked.connect(self.pushButton_attach_clicked)
-        thl.addWidget(pushButton_attach)
-        pushButton_min = QPushButton('0', title_widget)
-        pushButton_min.setMouseTracking(True)
-        pushButton_min.setObjectName('btn_min')
-        pushButton_min.clicked.connect(self.showMinimized)
-        thl.addWidget(pushButton_min)
-        pushButton_close = QPushButton('r', title_widget)
-        pushButton_close.setMouseTracking(True)
-        pushButton_close.setObjectName('btn_close')
-        pushButton_close.clicked.connect(self.close)
-        thl.addWidget(pushButton_close)
-        vl.addWidget(title_widget)
-        # QScintilla
-        editor = QssEditor(self)
-        editor.setMouseTracking(True)
-        editor.installEventFilter(self)
-        editor.setObjectName('QssEditor')
-        editor.textChanged.connect(self.text_edit_textChanged)
-        vl.addWidget(editor)
-        # 槽函数
-        pushButton_open.clicked.connect(self.pushButton_open_clicked)
-        pushButton_save.clicked.connect(self.pushButton_save_clicked)
-        # 快捷键
-        shortcut_save = QShortcut(QKeySequence.Save, self)
-        shortcut_save.activated.connect(self.shortcut_save_activated)
-
-        # find and replace
-        self.setup_fr_ui()
-
-    def setup_fr_ui(self):
-        """查找替换"""
-
-        def rf_resize():
-            widget.resize(self.width() - 32 * self.margin, 40)
-
-        widget = QWidget(self)
-        widget.installEventFilter(self)
-        widget.setObjectName('FRWidget')
-        widget.setGeometry(self.x() + 16 * self.margin, self.y() + 60,
-                           self.width() - 32 * self.margin, 40)
-        self.resized.connect(rf_resize)
-        gridLayout = QGridLayout(widget)
-        gridLayout.setContentsMargins(0, 0, 0, 0)
-        lineEdit_find = QLineEdit(widget)
-        lineEdit_find.setPlaceholderText(self.tr("find"))
-        lineEdit_find.setObjectName("LineEditFind")
-        gridLayout.addWidget(lineEdit_find, 0, 0, 1, 1)
-        btn_pre = QPushButton('h', widget)
-        btn_pre.setToolTip(self.tr("pre"))
-        btn_pre.setObjectName("btn_pre")
-        gridLayout.addWidget(btn_pre, 0, 1, 1, 1)
-        btn_next = QPushButton('i', widget)
-        btn_next.setToolTip(self.tr("next"))
-        btn_next.setObjectName("btn_next")
-        gridLayout.addWidget(btn_next, 0, 2, 1, 1)
-        lineEdit_replace = QLineEdit(widget)
-        lineEdit_replace.setPlaceholderText(self.tr("replace") + '...')
-        lineEdit_replace.setObjectName("LineEditReplace")
-        gridLayout.addWidget(lineEdit_replace, 1, 0, 1, 1)
-        btn_replace = QPushButton("P", widget)
-        btn_replace.setToolTip(self.tr("replace"))
-        btn_replace.setObjectName("btn_replace")
-        gridLayout.addWidget(btn_replace, 1, 1, 1, 1)
-        btn_replace_all = QPushButton("R", widget)
-        btn_replace_all.setToolTip(self.tr("replace all"))
-        btn_replace_all.setObjectName("btn_replace_all")
-        gridLayout.addWidget(btn_replace_all, 1, 2, 1, 1)
-
-        widget.hide()
+    def resize_fr(self):
+        self.fr_widget.setGeometry(50, 50, self.width() - 100, 40)
 
     def find_replace(self):
         if self.fr_widget.isHidden():
             self.fr_widget.show()
-            self.fr_widget.findChild(QWidget, "LineEditFind").setFocus()
-            self.lineEdit_find_textChanged(self.lineEdit_find.text())
+            self.fr_widget.le_find.setFocus()
+            self.le_find_textChanged(self.fr_widget.le_find.text())
         else:
             self.fr_widget.hide()
             self.editor.cancelFind()
@@ -199,7 +95,7 @@ class Qss(FramelessWindow):
         if hasattr(self.custom_widget, 'setStyleSheet'):
             self.custom_widget.setStyleSheet(text)
 
-    def pushButton_open_clicked(self):
+    def btn_open_clicked(self):
         qss_file, ext = QFileDialog.getOpenFileName(self, '打开qss', '', '*.qss')
         if qss_file:
             self.open_qss(qss_file)
@@ -212,13 +108,13 @@ class Qss(FramelessWindow):
         self.qss_name = str(os.path.basename(qss_file).split('.')[0])
         self.label_title.setText(self.title + '-' + self.qss_name)
 
-    def pushButton_save_clicked(self):
+    def btn_save_clicked(self):
         if self.qss_file:
             self.shortcut_save_activated()
             return
         qss_file, ext = QFileDialog.getSaveFileName(self, '保存qss', self.qss_name, '*.qss')
         if qss_file:
-            with open(qss_file, 'w') as f:
+            with open(qss_file, 'w', encoding='utf8') as f:
                 f.write(self.editor.text())
             self.qss_file = qss_file
             self.qss_name = str(os.path.basename(qss_file).split('.')[0])
@@ -228,48 +124,32 @@ class Qss(FramelessWindow):
 
     def shortcut_save_activated(self):
         if not self.qss_file:
-            if self.pushButton_save_clicked():
+            if self.btn_save_clicked():
                 self.label_title.setText(self.label_title.text().strip('*'))
         else:
             with open(self.qss_file, 'w') as f:
                 f.write(self.editor.text())
             self.label_title.setText(self.label_title.text().strip('*'))
 
-    def set_icon(self):
-        image = QImage(QSize(128, 128), QImage.Format_ARGB32)
-        text_painter = QPainter()
-        text_painter.begin(image)
-        text_painter.setRenderHint(QPainter.Antialiasing, True)
-        text_painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
-        font = QFont()
-        font.setFamily('Microsoft Yahei')
-        font.setPointSize(100)
-        text_painter.setFont(font)
-        text_painter.setPen(QColor(0, 128, 0))
-        text_painter.drawText(10, 106, 'Q')
-        text_painter.end()
-        p = QPixmap.fromImage(image)
-        self.setWindowIcon(QIcon(p))
-
-    def lineEdit_find_textChanged(self, text):
+    def le_find_textChanged(self, text):
         self.editor.findFirst(text, True, False, True, True)
 
-    def findText(self, forward):
-        text_to_find = self.lineEdit_find.text()
+    def find_text(self, forward):
+        text_to_find = self.fr_widget.le_find.text()
 
-        cline, cindex = self.editor.getCursorPosition()
-        lineFrom, indexFrom, lineTo, indexTo = self.editor.getSelection()
+        c_line, c_index = self.editor.getCursorPosition()
+        line_from, index_from, line_to, index_to = self.editor.getSelection()
 
         if forward:
-            line = lineTo
-            index = indexTo
+            line = line_to
+            index = index_to
         else:
-            if (lineFrom, indexFrom) == (-1, -1):
-                line = cline
-                index = cindex
+            if (line_from, index_from) == (-1, -1):
+                line = c_line
+                index = c_index
             else:
-                line = lineFrom
-                index = indexFrom
+                line = line_from
+                index = index_from
 
         return self.editor.findFirst(text_to_find, False, False, False, True, forward, line, index)
 
@@ -277,36 +157,42 @@ class Qss(FramelessWindow):
         if self.editor.hasSelectedText():
             row1, line1, row2, line2 = self.editor.getSelection()
             self.editor.setCursorPosition(row1, line1)
-        self.findText(True)
-        self.editor.replace(self.lineEdit_replace.text())
+        self.find_text(True)
+        self.editor.replace(self.fr_widget.le_replace.text())
         return True
 
     def btn_replace_all_clicked(self):
         self.editor.beginUndoAction()
         text = self.editor.text()
-        n = text.count(self.lineEdit_find.text(), False)
+        n = text.count(self.fr_widget.le_replace.text(), False)
         for i in range(n):
-            self.findText(True)
-            self.editor.replace(self.lineEdit_replace.text())
+            self.find_text(True)
+            self.editor.replace(self.fr_widget.le_replace.text())
         self.editor.endUndoAction()
 
-    def pushButton_attach_clicked(self, is_checked):
+    def btn_attach_clicked(self, is_checked):
         if is_checked:
             self.move_custom_widget()
 
     def moveEvent(self, event):
         super(Qss, self).moveEvent(event)
-        if self.pushButton_attach.isChecked():
+        if self.btn_attach.isChecked():
             self.move_custom_widget()
 
     def move_custom_widget(self):
         if hasattr(self.custom_widget, "setGeometry"):
             if self.custom_widget.isMaximized() or self.custom_widget.isFullScreen():
                 return
-            self.custom_widget.setGeometry(self.x() - self.custom_widget.width(),
+            self.custom_widget.setGeometry(self.x() - self.custom_widget.width() - 3,
                                            self.y(),
                                            self.custom_widget.width(),
                                            self.custom_widget.height())
+
+    def eventFilter(self, obj, event):
+        if obj.objectName() == 'editor' and isinstance(event, QEnterEvent):
+            self.setCursor(Qt.ArrowCursor)
+
+        return QMainWindow.eventFilter(self, obj, event)
 
     def closeEvent(self, event):
         if self.qss_file:
@@ -319,6 +205,7 @@ if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication
     from pyqss import Qss
 
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication(sys.argv)
     qss = Qss()
     qss.editor.add_apis(qss)
