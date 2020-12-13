@@ -57,7 +57,7 @@ class QssEditor(QsciScintilla):
         self.setMarginLineNumbers(0, QsciScintilla.NumberMargin)
         self.setMarginWidth(0, "00000")
         self.setMarginsForegroundColor(QColor(163, 163, 163))  # 前景色
-        self.setMarginsBackgroundColor(QColor(39, 40, 34))  # 背景色
+        self.setMarginsBackgroundColor(QColor(43, 43, 43))  # 背景色
         # 左侧栏-符号
         self.setMarginLineNumbers(1, QsciScintilla.SymbolMargin)
         self.setMarginWidth(1, 0)
@@ -66,7 +66,7 @@ class QssEditor(QsciScintilla):
         # 左侧栏-折叠
         self.setFolding(QsciScintilla.PlainFoldStyle, 2)  # 折叠
         self.setMarginWidth(2, "00")
-        self.setFoldMarginColors(QColor(39, 40, 34), QColor(39, 40, 34))
+        self.setFoldMarginColors(QColor(43, 43, 43), QColor(43, 43, 43))
 
         # 滚动条
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
@@ -149,7 +149,10 @@ class QssEditor(QsciScintilla):
         elif key == Qt.Key_BraceLeft:
             # 自动添加右括号
             self.insert("}")
-        elif key == Qt.Key_Backspace or key == Qt.Key_Delete:
+        elif key == Qt.Key_ParenLeft:
+            # 自动添加右括号
+            self.insert(")")
+        elif key == Qt.Key_Backspace:
             line, index = self.getCursorPosition()
             line_text = self.text(line)
             # print(line_text)
@@ -201,82 +204,3 @@ class QssEditor(QsciScintilla):
                 event.ignore()
         else:
             event.ignore()
-
-    # def marginClickedFunc(self, margin, line):
-    #     print(margin, line)
-    #     # self.markerDefine(QsciScintilla.Circle, 0)
-    #     # self.setMarkerBackgroundColor(Qt.green)
-    #     # self.markerAdd(line, 0)
-    #     # self.menu_flag = True
-
-    # def mousePressEvent(self, event):
-    #     super(QssEditor, self).mousePressEvent(event)
-    #     if self.menu_flag:
-    #         pos = event.pos()
-    #         menu = SColorPanel(parent=self)
-    #         menu.exec_(self.mapToGlobal(QPoint(pos.x(), pos.y() + 10)))
-    #     self.menu_flag = False
-    #
-    # def textChangedFunc(self):
-    #     print(111111111)
-    #     self.markerDeleteAll(-1)
-    #
-    #     pattern = re.compile(
-    #         "#[0-9a-fA-F]{8}|"  # ffffffff
-    #         "#[0-9a-fA-F]{6}|"  # ffffff
-    #         "#[0-9a-fA-F]{3}|"  # fff
-    #         "[rR][gG][bB][aA]?\(.*\)|"  # rgba
-    #         "[hH][sS][vV][aA]?\(.*\)|"  # hsv
-    #         "[hH][sS][lL][aA]?\(.*\)"  # hsl
-    #     )
-    #     for i in range(self.lines()):
-    #         color = pattern.findall(self.text(i).strip())
-    #         if color:
-    #             try:
-    #                 color = calc_color(color[0])
-    #             except Exception as e:
-    #                 print(f'color error:{color[0]}', e)
-    #                 color = QColor()
-    #             print(i)
-    #             # self.markerDefine(create_image(color), i)
-    #             self.markerAdd(i, 0)
-
-
-# def calc_color(c_str: str):
-#     color = QColor(c_str)
-#     if c_str.startswith("rgba"):
-#         r, g, b, a = c_str.lstrip('rgba(').rstrip(')').replace(' ', '').split(',')
-#         color = QColor(int(r), int(g), int(b), float(a))
-#     elif c_str.startswith("rgb"):
-#         r, g, b = c_str.lstrip('rgb(').rstrip(')').replace(' ', '').split(',')
-#         color = QColor(int(r), int(g), int(b))
-#     elif c_str.startswith("hsva"):
-#         h, s, v, a = c_str.lstrip('hsva(').rstrip(')').replace(' ', '').split(',')
-#         color.setHsv(h, s, v, a)
-#     elif c_str.startswith("hsv"):
-#         h, s, v = c_str.lstrip('hsv(').rstrip(')').replace(' ', '').split(',')
-#         color.setHsv(h, s, v)
-#     elif c_str.startswith("hsla"):
-#         h, s, l, a = c_str.lstrip('hsla(').rstrip(')').replace(' ', '').split(',')
-#         color.setHsl(h, s, l, a)
-#     elif c_str.startswith("hsv"):
-#         h, s, l = c_str.lstrip('hsl(').rstrip(')').replace(' ', '').split(',')
-#         color.setHsv(h, s, l)
-#
-#     return color
-#
-#
-# def create_image(color):
-#     image = QImage(QSize(16, 16), QImage.Format_ARGB32)
-#     painter = QPainter()
-#     painter.begin(image)
-#     painter.fillRect(image.rect(), QColor(39, 40, 34))
-#     painter.end()
-#     painter.begin(image)
-#     painter.setRenderHint(QPainter.Antialiasing, True)
-#     painter.setRenderHint(QPainter.SmoothPixmapTransform, True)
-#     painter.setPen(Qt.NoPen)
-#     painter.setBrush(color)
-#     painter.drawEllipse(1, 1, 15, 15)
-#     painter.end()
-#     return image

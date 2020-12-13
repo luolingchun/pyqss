@@ -28,7 +28,7 @@ class QsciLexerQSS(QsciLexerCustom):
     def __init__(self, parent=None):
         super(QsciLexerQSS, self).__init__(parent)
         self.setDefaultColor(QColor(248, 248, 248))  # 默认前景色
-        self.setDefaultPaper(QColor(39, 40, 34))  # 默认背景色
+        self.setDefaultPaper(QColor(43, 43, 43))  # 默认背景色
         self.setDefaultFont(QFont("Consolas", 12))  # 默认字体
 
         # 字体颜色
@@ -68,7 +68,7 @@ class QsciLexerQSS(QsciLexerCustom):
 
         self.startStyling(start)
         splitter = re.compile(
-            r"(\{\.|\.\}|\#|\'|\"\"\"|\n|\".*\"|\d|\w+-\w+-\w+-\w+-\w+|\w+-\w+-\w+-\w+|\w+-\w+-\w+|\w+-\w+|\w+|\W)")
+            r"({\.|\.}|#|\'|\"\"\"|\n|\".*\"|\d|\w+-\w+-\w+-\w+-\w+|\w+-\w+-\w+-\w+|\w+-\w+-\w+|\w+-\w+|\w+|\W)")
         text = editor.text()[start:end]
         tokens = [(token, len(bytearray(token, "utf-8"))) for token in splitter.findall(text)]
         if start != 0:
@@ -78,7 +78,7 @@ class QsciLexerQSS(QsciLexerCustom):
             # Initialize token variables
         previous_token_text = ""
         token_text = ""
-        next_token_text = ""
+        # next_token_text = ""
         for i, token in enumerate(tokens):
             # Save previous token
             if token_text != "":
@@ -121,7 +121,7 @@ class QsciLexerQSS(QsciLexerCustom):
         lines = editor.text().splitlines()
         # Initialize the folding variables
         fold_level = 0
-        folding = False
+        # folding = False
         # Folding loop
         for line_number, line in enumerate(lines):
             # Add folding points as needed

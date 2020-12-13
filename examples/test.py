@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Author  : llc
 # @Time    : 2020/3/15 17:42
-
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 
 if __name__ == '__main__':
-    from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 
+    # 适配高分辨率
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication([])
     window = QMainWindow()
     pushbutton = QPushButton('button', window)

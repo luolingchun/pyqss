@@ -1,31 +1,33 @@
-/*icon*/
-#LabelIcon{
-	border-top-left-radius:5px;
-	color:green;
-	min-width:46px;
-	min-height:46px;
-	font-size:30px;
-	font-family:"Microsoft Yahei";
-	background:rgba(39, 40, 34, 255);
-}
-/*top widget*/
-#TopWidget{
-    border:0px;
-	border-radius:5px;
-	background-color:rgba(39, 40, 34, 255);
+#QssWidget{
+	border-radius:9px;
+    background-color:rgb(43, 43, 43);
 }
 
-/*title*/
-#Title{
+#label_icon{
+	color:rgb(87, 191, 106);
+	min-width:40px;
+	min-height:40px;
+	font-size:30px;
+	font-family:"Microsoft Yahei";
+	background-color:rgb(43, 43, 43);
+}
+
+#btn_open,#btn_save{
+	font-size:14px;
+	font-family:"Microsoft Yahei";
+	border:0px;
+	border-radius:20px;
+	min-width:60px;
+	min-height:40px;
+	color:white;
+}
+
+#label_title{
 	color:white;
 	font-size:16px;
 	font-family:"Microsoft Yahei";
 }
 
-/*open and save*/
-#btn_open,#btn_save{
-	font-family:"Microsoft Yahei";
-}
 
 #btn_attach{
 	border:0px;
@@ -38,19 +40,9 @@
 }
 
 #btn_attach:checked{
-	color:rgb(0,128,0);
+	color:rgb(87, 191, 106);
 }
 
-#btn_open,#btn_save{
-	border:0px;
-	border-radius:20px;
-	min-width:60px;
-	min-height:40px;
-	color:white;
-	font-size:14px;
-}
-
-/*min and close*/
 #btn_min,#btn_close{
 	border:0px;
 	border-radius:20px;
@@ -66,36 +58,35 @@
 }
 
 #btn_close:hover{
-	background-color:rgba(240, 104, 36,255);
+	background-color:rgb(240, 104, 36);
+}
+
+#btn_open:hover,#btn_save:hover,#btn_min:hover,#btn_attach:hover{
+	background-color:rgba(87, 191, 106,150);
 }
 
 #btn_open:pressed,#btn_save:pressed,#btn_min:pressed,#btn_attach:pressed{
-	background-color:rgba(81,81,81,200);
+	background-color:rgba(87, 191, 106,100);
 }
 
 #btn_close:pressed{
 	background-color:rgba(240, 104, 36,100);
 }
 
-QPushButton:hover
-{
-    background-color:rgba(81 , 81 , 81,100);
-}
-
 /*find and replace*/
 #FRWidget{
-	border:0px solid gray;
+	border:0px;
 	border-radius:10px;
 	min-height:60px;
-	background-color:rgba(60, 63, 65, 255);
+	background-color:rgb(63,63,63);
 }
 
 #FRWidget>QLineEdit{
 	border:1px solid gray;
 	min-height:20px;
-	border-radius:5px;
+	border-radius:6px;
 	color:darkgray;
-	margin-left:10px;
+	margin-left:3px;
 	font-size:14px;
 	font-family:"Microsoft Yahei";
 	min-height:20px;
@@ -103,11 +94,11 @@ QPushButton:hover
 }
 
 #FRWidget>QLineEdit:focus{
-	border-color:rgb(0, 120, 215);
+	border-color:rgb(87, 189, 107);
 }
 
 #FRWidget>QLineEdit:hover{
-	border-color:rgb(0, 120, 215);
+	border-color:rgb(87, 189, 107);
 }
 
 #FRWidget>QPushButton{
@@ -121,11 +112,11 @@ QPushButton:hover
 
 #FRWidget>QPushButton:hover{
 	border-radius:13px;
-	background-color:rgba(81, 81, 81,150);
+	background-color:rgba(87, 189, 107,150);
 }
 
 #FRWidget>QPushButton:pressed{
-	background-color:rgba(81, 81, 81,255);
+	background-color:rgba(87, 189, 107,100);
 }
 
 #btn_pre,#btn_next{
@@ -136,62 +127,50 @@ QPushButton:hover
 	font-family:"Wingdings 2";
 }
 
-#btn_next,#btn_replace_all{
-	margin-right:10px;
-}
-
-#LineEditFind,#btn_pre,#btn_next{
-	margin-top:5px;
-}
-
-#LineEditReplace,#btn_replace,#btn_replace_all{
-	margin-bottom:5px;
-}
-
 /*editor*/
-#QssEditor{
+#editor{
 	border:0px;
 }
 
-QScrollBar::vertical{
+#editor QScrollBar::vertical{
 	border:0px;
-	background:rgba(39, 40, 34,255);
+	background:rgb(43, 43, 43);
 	width:12px;
 }
 
-QScrollBar::sub-line:vertical{
+#editor QScrollBar::sub-line:vertical{
 	height:0px;
 }
 
-QScrollBar::sub-page:vertical{
-	background:rgba(39, 40, 34,255);
+#editor QScrollBar::sub-page:vertical{
+	background:rgb(43, 43, 43);
 }
 
-QScrollBar::handle:vertical{
+#editor QScrollBar::handle:vertical{
 	border-radius:5px;
-	background:rgba(81,81,81,100);
+	background:rgba(86,86,86,200);
 }
 
-QScrollBar::handle:vertical:hover{
+#editor QScrollBar::handle:vertical:hover{
 	border-radius:5px;
-	background:rgba(81,81,81,200);
+	background:rgba(86,86,86,255);
 }
 
-QScrollBar::add-page:vertical{
-	background:rgba(39, 40, 34,255);
+#editor QScrollBar::add-page:vertical{
+	background:rgb(43, 43, 43);
 }
 
-QScrollBar::add-line:vertical{
+#editor QScrollBar::add-line:vertical{
 	height:0px;
 }
 
-QAbstractItemView{
+#editor QAbstractItemView{
 	border:1px solid rgb(86, 86, 86);
 	color:rgb(160, 161, 162);
 	background:rgb(60, 63, 65);
 }
 
-QAbstractItemView:item{
+#editor QAbstractItemView:item{
 	border:0px;
 	color:rgb(160, 161, 162);
 	background:rgb(60, 63, 65);
@@ -203,37 +182,37 @@ QAbstractItemView:item{
 /*	background:rgb(33, 66, 131);*/
 /*}*/
 
-QAbstractItemView:item:selected{
+#editor QAbstractItemView:item:selected{
 	border:0px;
 	color:rgb(160, 161, 162);
 	background:rgb(33, 66, 131);
 }
 
-QsciScintilla QAbstractItemView QScrollBar:vertical{
+#editor QsciScintilla QAbstractItemView QScrollBar:vertical{
 	border:0px;
 	background:rgb(89, 91, 93);
 	width:8px;
 }
 
-QsciScintilla QAbstractItemView QScrollBar::handle:vertical{
+#editor QsciScintilla QAbstractItemView QScrollBar::handle:vertical{
 	border-radius:3px;
 	background:rgb(89, 91, 93);
 }
 
-QsciScintilla QAbstractItemView QScrollBar::handle:vertical:hover{
+#editor QsciScintilla QAbstractItemView QScrollBar::handle:vertical:hover{
 	border-radius:3px;
 	background:rgb(89, 91, 93);
 }
 
-QsciScintilla QAbstractItemView QScrollBar::sub-page:vertical{
+#editor QsciScintilla QAbstractItemView QScrollBar::sub-page:vertical{
 	background:rgb(60, 63, 65);
 }
 
-QsciScintilla QAbstractItemView QScrollBar::add-page:vertical{
+#editor QsciScintilla QAbstractItemView QScrollBar::add-page:vertical{
 	background:rgb(60, 63, 65);
 }
 
-QsciScintilla QAbstractItemView QScrollBar:horizontal{
+#editor QsciScintilla QAbstractItemView QScrollBar:horizontal{
 	border:0px;
 	width:0px;
 }
