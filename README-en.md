@@ -32,21 +32,21 @@ Import QSS from pyqss and register the MainWindow into QSS, and enjoy it：[exam
 ```python
 if __name__ == '__main__':
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QApplication, QMainWindow
     from pyqss import Qss
 
     app = QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = QMainWindow()
     main_window.show()
-    # register  Mainwindow 
-    qss = Qss(main_window, language='en')
+    # register  main_window
+    qss = Qss(main_window)
     qss.show()
 
     app.exec_()
 ```
+
 ## Screenshot
-![show](./screen/show.png)
 
-![comment](./screen/comment.gif)
+![show1](./screen/show1.gif)
 
-![find_replace](./screen/find_replace.gif)
+![show2](./screen/show2.gif)

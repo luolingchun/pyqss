@@ -1,5 +1,13 @@
 QPushButton{
 	border:1px solid cyan;
 	border-radius:10px;
-	background-color:rgb(255,255,255);
+}
+
+QLabel{
+	font-family:consolas;
+	font-size:32px;
+}
+
+QMainWindow{
+	background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb(10,200,50), stop:1 rgb(255,255,255));
 }

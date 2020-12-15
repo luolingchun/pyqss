@@ -5,12 +5,12 @@
 
 from PyQt5.Qsci import QsciScintilla, QsciAPIs
 from PyQt5.QtCore import Qt, QUrl, pyqtSignal
-from PyQt5.QtGui import QColor, QKeySequence
-from PyQt5.QtWidgets import QShortcut, QApplication
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QApplication
 
 from .commenter import toggle_commenting
-from .lexer import QsciLexerQSS
 from .keywords import *
+from .lexer import QsciLexerQSS, BACKGROUND_COLOR
 
 
 class QssEditor(QsciScintilla):
@@ -44,7 +44,7 @@ class QssEditor(QsciScintilla):
         self.setCaretWidth(2)  # 光标宽度
         self.setCaretLineVisible(True)  # 高亮显示选中的行
         self.setCaretForegroundColor(Qt.white)  # 闪烁光标颜色
-        self.setCaretLineBackgroundColor(QColor(62, 61, 50))  # 选中行背景色
+        self.setCaretLineBackgroundColor(QColor(32, 32, 32))  # 选中行背景色
 
         # 自动补全
         self.setAutoCompletionCaseSensitivity(False)  # 不区分大小写,好像没用
@@ -57,7 +57,7 @@ class QssEditor(QsciScintilla):
         self.setMarginLineNumbers(0, QsciScintilla.NumberMargin)
         self.setMarginWidth(0, "00000")
         self.setMarginsForegroundColor(QColor(163, 163, 163))  # 前景色
-        self.setMarginsBackgroundColor(QColor(43, 43, 43))  # 背景色
+        self.setMarginsBackgroundColor(BACKGROUND_COLOR)  # 背景色
         # 左侧栏-符号
         self.setMarginLineNumbers(1, QsciScintilla.SymbolMargin)
         self.setMarginWidth(1, 0)
@@ -66,7 +66,7 @@ class QssEditor(QsciScintilla):
         # 左侧栏-折叠
         self.setFolding(QsciScintilla.PlainFoldStyle, 2)  # 折叠
         self.setMarginWidth(2, "00")
-        self.setFoldMarginColors(QColor(43, 43, 43), QColor(43, 43, 43))
+        self.setFoldMarginColors(BACKGROUND_COLOR, BACKGROUND_COLOR)
 
         # 滚动条
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
@@ -95,7 +95,7 @@ class QssEditor(QsciScintilla):
         # self.SCN_ZOOM.connect(self.set_width)
 
         # 行数变化
-        self.linesChanged.connect(self.onLinesChanged)
+        self.linesChanged.connect(self.lines_changed)
 
         # # 多光标支持
         self.SendScintilla(QsciScintilla.SCI_SETMULTIPLESELECTION, True)
@@ -106,16 +106,7 @@ class QssEditor(QsciScintilla):
         self.setUtf8(True)
         self.setEdgeMode(QsciScintilla.EDGE_NONE)  # 行字数超过50时什么也不做，默认背景标记为绿色
 
-        QShortcut(QKeySequence("Ctrl+0"), self, self.test)
-
-        # self.textChanged.connect(self.textChangedFunc)
-        #
-        # self.markerDefine(create_image(QColor(0, 128, 0)), 0)
-
-    def test(self):
-        print('test')
-
-    def onLinesChanged(self):
+    def lines_changed(self):
         self.setMarginWidth(0, self.fontMetrics().width(str(self.lines())) + 18)
 
     def add_apis(self, custom_widget):

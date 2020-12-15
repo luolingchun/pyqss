@@ -5,7 +5,7 @@
 
 from setuptools import setup
 
-__version__ = '1.3'
+__version__ = '1.3.2'
 
 long_description = """
 
@@ -34,14 +34,14 @@ Import QSS from pyqss and register the MainWindow into QSS, and enjoy it.
 ```python
 if __name__ == '__main__':
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QApplication, QMainWindow
     from pyqss import Qss
 
     app = QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = QMainWindow()
     main_window.show()
-    # register  MainWindow 
-    qss = Qss(main_window, language='en')
+    # register  main_window
+    qss = Qss(main_window)
     qss.show()
 
     app.exec_()
