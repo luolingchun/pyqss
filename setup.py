@@ -3,8 +3,9 @@
 # @Author  : llc
 # @File    : setup.py
 
-from setuptools import setup, find_packages
-from pyqss import __version__
+from setuptools import setup
+
+__version__ = '1.3'
 
 long_description = """
 
@@ -57,8 +58,7 @@ setup(
     author='llc',
     author_email='luolingchun.com@gmail.com',
     license='GPLv3',
-    packages=find_packages(),
-    package_data={"pyqss": ["qss/*.qss", "i18n/*.json"]},
+    packages=['pyqss', 'pyqss.sci', 'pyqss.ui', 'pyqss.widgets'],
     include_package_data=True,
     python_requires=">=3.6",
     zip_safe=False,

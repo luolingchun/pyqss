@@ -3,31 +3,3 @@ QPushButton{
 	border-radius:10px;
 	background-color:rgb(255,255,255);
 }
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
-
-#btn_attach:checked{
-	color:rgb(0,128,0);
-}
