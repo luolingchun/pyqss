@@ -2,8 +2,8 @@
 # @Author  : llc
 # @Time    : 2020/12/13 14:11
 
-from ui.main import Ui_QssWindow
-from .frameless_window import FramelessWindow
+from pyqss.ui.main import Ui_QssWindow
+from pyqss.widgets.frameless_window import FramelessWindow
 
 
 class QssWindow(FramelessWindow, Ui_QssWindow):

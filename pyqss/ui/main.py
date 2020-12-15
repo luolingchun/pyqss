@@ -89,5 +89,5 @@ class Ui_QssWindow(object):
         self.btn_attach.setText(_translate("QssWindow", "~"))
         self.btn_min.setText(_translate("QssWindow", "0"))
         self.btn_close.setText(_translate("QssWindow", "r"))
-from sci.editor import QssEditor
-from . import images_rc
+from pyqss.sci.editor import QssEditor
+from pyqss.ui import images_rc

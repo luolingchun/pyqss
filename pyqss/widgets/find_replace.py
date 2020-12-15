@@ -3,7 +3,7 @@
 # @Time    : 2020/12/13 17:55
 from PyQt5.QtWidgets import QWidget
 
-from ui.find_replace import Ui_widget
+from pyqss.ui.find_replace import Ui_widget
 
 
 class FRWidget(QWidget, Ui_widget):
@@ -12,3 +12,6 @@ class FRWidget(QWidget, Ui_widget):
         self.setupUi(self)
 
         self.setMinimumHeight(60)
+
+    def mouseMoveEvent(self, event):
+        pass

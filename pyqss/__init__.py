@@ -10,12 +10,8 @@ from PyQt5.QtWidgets import QFileDialog, \
     QShortcut, QMainWindow
 
 from pyqss.tr import init_language
-
-__version__ = '1.3'
-
-from widgets.find_replace import FRWidget
-
-from widgets.main import QssWindow
+from pyqss.widgets.find_replace import FRWidget
+from pyqss.widgets.main import QssWindow
 
 
 class Qss(QssWindow):
@@ -53,7 +49,7 @@ class Qss(QssWindow):
         self.btn_min.clicked.connect(self.showMinimized)
         self.btn_close.clicked.connect(self.close)
 
-        self.editor.textChanged.connect(self.text_edit_textChanged)
+        self.editor.textChanged.connect(self.editor_text_changed)
         self.editor.opened.connect(self.open_qss)
 
         # 加载样式
@@ -68,7 +64,7 @@ class Qss(QssWindow):
         self.fr_widget = FRWidget(parent=self)
         self.fr_widget.hide()
         self.fr_widget.setGeometry(50, 50, self.width() - 100, 40)
-        self.fr_widget.le_find.textChanged.connect(self.le_find_textChanged)
+        self.fr_widget.le_find.textChanged.connect(self.le_find_text_changed)
         self.fr_widget.btn_pre.clicked.connect(lambda: self.find_text(forward=False))
         self.fr_widget.btn_next.clicked.connect(lambda: self.find_text(forward=True))
         self.fr_widget.btn_replace.clicked.connect(self.btn_replace_clicked)
@@ -83,12 +79,12 @@ class Qss(QssWindow):
         if self.fr_widget.isHidden():
             self.fr_widget.show()
             self.fr_widget.le_find.setFocus()
-            self.le_find_textChanged(self.fr_widget.le_find.text())
+            self.le_find_text_changed(self.fr_widget.le_find.text())
         else:
             self.fr_widget.hide()
             self.editor.cancelFind()
 
-    def text_edit_textChanged(self):
+    def editor_text_changed(self):
         text = self.editor.text()
         # self.setStyleSheet(text)
         self.label_title.setText(self.title + "-" + self.qss_name + '*')
@@ -131,7 +127,7 @@ class Qss(QssWindow):
                 f.write(self.editor.text())
             self.label_title.setText(self.label_title.text().strip('*'))
 
-    def le_find_textChanged(self, text):
+    def le_find_text_changed(self, text):
         self.editor.findFirst(text, True, False, True, True)
 
     def find_text(self, forward):

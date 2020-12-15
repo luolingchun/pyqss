@@ -189,7 +189,7 @@
   <customwidget>
    <class>QssEditor</class>
    <extends>QWidget</extends>
-   <header location="global">sci.editor.h</header>
+   <header location="global">pyqss.sci.editor.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
