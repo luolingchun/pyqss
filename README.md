@@ -32,11 +32,11 @@ pip install pyqss
 ```python
 if __name__ == '__main__':
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtWidgets import QApplication, QMainWindow
     from pyqss import Qss
 
     app = QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = QMainWindow()
     main_window.show()
     # 注册主窗口
     qss = Qss(main_window)
@@ -44,10 +44,9 @@ if __name__ == '__main__':
 
     app.exec_()
 ```
+
 ## 截图
 
-![show](./screen/show.png)
+![show1](./screen/show1.gif)
 
-![comment](./screen/comment.gif)
-
-![find_replace](./screen/find_replace.gif)
+![show2](./screen/show2.gif)

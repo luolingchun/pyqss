@@ -9,6 +9,8 @@ from PyQt5.QtGui import QColor, QFont
 
 from .keywords import *
 
+BACKGROUND_COLOR = QColor(20, 20, 20)
+
 
 class QsciLexerQSS(QsciLexerCustom):
     flags = {
@@ -28,7 +30,7 @@ class QsciLexerQSS(QsciLexerCustom):
     def __init__(self, parent=None):
         super(QsciLexerQSS, self).__init__(parent)
         self.setDefaultColor(QColor(248, 248, 248))  # 默认前景色
-        self.setDefaultPaper(QColor(43, 43, 43))  # 默认背景色
+        self.setDefaultPaper(BACKGROUND_COLOR)  # 默认背景色
         self.setDefaultFont(QFont("Consolas", 12))  # 默认字体
 
         # 字体颜色
