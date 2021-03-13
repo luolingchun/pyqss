@@ -5,7 +5,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 
 if __name__ == '__main__':
-
     # 适配高分辨率
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication([])
@@ -14,6 +13,7 @@ if __name__ == '__main__':
     pushbutton.setObjectName('button')
     pushbutton.move(20, 20)
     label = QLabel("label", window)
+    label.setObjectName('label')
     label.move(20, 80)
     window.show()
     window.resize(300, 400)
@@ -21,6 +21,7 @@ if __name__ == '__main__':
     from pyqss import Qss
 
     qss = Qss(window, language='en')
+    # qss = Qss(window, language='zh')
     qss.show()
 
     app.exec_()

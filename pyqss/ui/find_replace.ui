@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>widget</class>
  <widget class="QWidget" name="widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>293</width>
+    <height>55</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Find and Replace</string>
   </property>
@@ -40,14 +48,14 @@
        <number>3</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLineEdit" name="le_find">
+       <widget class="QLineEdit" name="leFind">
         <property name="placeholderText">
          <string/>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="btn_pre">
+       <widget class="QPushButton" name="btnPre">
         <property name="toolTip">
          <string>pre</string>
         </property>
@@ -57,7 +65,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QPushButton" name="btn_next">
+       <widget class="QPushButton" name="btnNext">
         <property name="toolTip">
          <string>next</string>
         </property>
@@ -67,10 +75,10 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="le_replace"/>
+       <widget class="QLineEdit" name="leReplace"/>
       </item>
       <item row="1" column="1">
-       <widget class="QPushButton" name="btn_replace">
+       <widget class="QPushButton" name="btnReplace">
         <property name="toolTip">
          <string>replace</string>
         </property>
@@ -80,7 +88,7 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QPushButton" name="btn_replace_all">
+       <widget class="QPushButton" name="btnReplaceAll">
         <property name="toolTip">
          <string>replace all</string>
         </property>

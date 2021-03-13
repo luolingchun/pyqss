@@ -3,7 +3,7 @@
     background-color:rgb(20, 20, 20);
 }
 
-#label_icon{
+#labelIcon{
 	color:rgb(10, 200, 50);
 	min-width:40px;
 	min-height:40px;
@@ -12,7 +12,7 @@
 	background-color:rgb(20, 20, 20);
 }
 
-#btn_open,#btn_save{
+#btnOpen,#btnSave{
 	font-size:14px;
 	font-family:"Microsoft Yahei";
 	border:0px;
@@ -22,14 +22,14 @@
 	color:white;
 }
 
-#label_title{
+#labelTitle{
 	color:white;
 	font-size:16px;
 	font-family:"Microsoft Yahei";
 }
 
 
-#btn_attach{
+#btnAttach{
 	border:0px;
 	border-radius:20px;
 	color:white;
@@ -39,11 +39,11 @@
 	min-height:40px;
 }
 
-#btn_attach:checked{
+#btnAttach:checked{
 	color:rgb(10, 200, 50);
 }
 
-#btn_min,#btn_close{
+#btnMin,#btnClose{
 	border:0px;
 	border-radius:20px;
 	min-width:40px;
@@ -53,19 +53,19 @@
 	font-family:"Webdings";
 }
 
-#btn_close:hover{
+#btnClose:hover{
 	background-color:rgb(240, 104, 36);
 }
 
-#btn_open:hover,#btn_save:hover,#btn_min:hover,#btn_attach:hover{
+#btnOpen:hover,#btnSave:hover,#btnMin:hover,#btnAttach:hover{
 	background-color:rgba(15, 200, 50, 100);
 }
 
-#btn_open:pressed,#btn_save:pressed,#btn_min:pressed,#btn_attach:pressed{
+#btnOpen:pressed,#btnSave:pressed,#btnMin:pressed,#btnAttach:pressed{
 	background-color:rgba(10, 200, 50, 50);
 }
 
-#btn_close:pressed{
+#btnClose:pressed{
 	background-color:rgba(240, 104, 36, 100);
 }
 
@@ -115,11 +115,11 @@
 	background-color:rgba(10, 200, 50, 50);
 }
 
-#btn_pre,#btn_next{
+#btnPre,#btnNext{
 	font-family:"Wingdings 3";
 }
 
-#btn_replace,#btn_replace_all{
+#btnReplace,#btnReplaceAll{
 	font-family:"Wingdings 2";
 }
 

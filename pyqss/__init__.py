@@ -27,8 +27,9 @@ class Qss(QssWindow):
         self.qss_name = 'unknown'
         self.title = self.tr("QSS Editor")
         self.setWindowTitle(self.title)
-        self.btn_open.setText(self.tr('open'))
-        self.btn_save.setText(self.tr('save'))
+        self.labelTitle.setText(self.title)
+        self.btnOpen.setText(self.tr('open'))
+        self.btnSave.setText(self.tr('save'))
         # 添加api
         self.editor.add_apis(self.custom_widget)
 
@@ -43,11 +44,11 @@ class Qss(QssWindow):
         QShortcut(QKeySequence("Esc"), self, lambda: self.fr_widget.hide())
 
         # 信号和槽
-        self.btn_open.clicked.connect(self.btn_open_clicked)
-        self.btn_save.clicked.connect(self.btn_save_clicked)
-        self.btn_attach.clicked.connect(self.btn_attach_clicked)
-        self.btn_min.clicked.connect(self.showMinimized)
-        self.btn_close.clicked.connect(self.close)
+        self.btnOpen.clicked.connect(self.btnOpen_clicked)
+        self.btnSave.clicked.connect(self.btnSave_clicked)
+        self.btnAttach.clicked.connect(self.btnAttach_clicked)
+        self.btnMin.clicked.connect(self.showMinimized)
+        self.btnClose.clicked.connect(self.close)
 
         self.editor.textChanged.connect(self.editor_text_changed)
         self.editor.opened.connect(self.open_qss)
@@ -61,14 +62,15 @@ class Qss(QssWindow):
         self.init_fr_widget()
 
     def init_fr_widget(self):
+        """查找替换控件"""
         self.fr_widget = FRWidget(parent=self)
         self.fr_widget.hide()
         self.fr_widget.setGeometry(50, 50, self.width() - 100, 40)
-        self.fr_widget.le_find.textChanged.connect(self.le_find_text_changed)
-        self.fr_widget.btn_pre.clicked.connect(lambda: self.find_text(forward=False))
-        self.fr_widget.btn_next.clicked.connect(lambda: self.find_text(forward=True))
-        self.fr_widget.btn_replace.clicked.connect(self.btn_replace_clicked)
-        self.fr_widget.btn_replace_all.clicked.connect(self.btn_replace_all_clicked)
+        self.fr_widget.leFind.textChanged.connect(self.leFind_text_changed)
+        self.fr_widget.btnPre.clicked.connect(lambda: self.find_text(forward=False))
+        self.fr_widget.btnNext.clicked.connect(lambda: self.find_text(forward=True))
+        self.fr_widget.btnReplace.clicked.connect(self.btnReplace_clicked)
+        self.fr_widget.btnReplaceAll.clicked.connect(self.btnReplaceAll_clicked)
 
         self.resized.connect(self.resize_fr)
 
@@ -78,8 +80,8 @@ class Qss(QssWindow):
     def find_replace(self):
         if self.fr_widget.isHidden():
             self.fr_widget.show()
-            self.fr_widget.le_find.setFocus()
-            self.le_find_text_changed(self.fr_widget.le_find.text())
+            self.fr_widget.leFind.setFocus()
+            self.leFind_text_changed(self.fr_widget.leFind.text())
         else:
             self.fr_widget.hide()
             self.editor.cancelFind()
@@ -87,11 +89,11 @@ class Qss(QssWindow):
     def editor_text_changed(self):
         text = self.editor.text()
         # self.setStyleSheet(text)
-        self.label_title.setText(self.title + "-" + self.qss_name + '*')
+        self.labelTitle.setText(self.title + "-" + self.qss_name + '*')
         if hasattr(self.custom_widget, 'setStyleSheet'):
             self.custom_widget.setStyleSheet(text)
 
-    def btn_open_clicked(self):
+    def btnOpen_clicked(self):
         qss_file, ext = QFileDialog.getOpenFileName(self, '打开qss', '', '*.qss')
         if qss_file:
             self.open_qss(qss_file)
@@ -102,9 +104,9 @@ class Qss(QssWindow):
             self.editor.append(f.read())
         self.qss_file = qss_file
         self.qss_name = str(os.path.basename(qss_file).split('.')[0])
-        self.label_title.setText(self.title + '-' + self.qss_name)
+        self.labelTitle.setText(self.title + '-' + self.qss_name)
 
-    def btn_save_clicked(self):
+    def btnSave_clicked(self):
         if self.qss_file:
             self.shortcut_save_activated()
             return
@@ -114,24 +116,24 @@ class Qss(QssWindow):
                 f.write(self.editor.text())
             self.qss_file = qss_file
             self.qss_name = str(os.path.basename(qss_file).split('.')[0])
-            self.label_title.setText(self.title + '-' + str(os.path.basename(qss_file).split('.')[0]))
+            self.labelTitle.setText(self.title + '-' + str(os.path.basename(qss_file).split('.')[0]))
             return True
         return False
 
     def shortcut_save_activated(self):
         if not self.qss_file:
-            if self.btn_save_clicked():
-                self.label_title.setText(self.label_title.text().strip('*'))
+            if self.btnSave_clicked():
+                self.labelTitle.setText(self.labelTitle.text().strip('*'))
         else:
             with open(self.qss_file, 'w') as f:
                 f.write(self.editor.text())
-            self.label_title.setText(self.label_title.text().strip('*'))
+            self.labelTitle.setText(self.labelTitle.text().strip('*'))
 
-    def le_find_text_changed(self, text):
+    def leFind_text_changed(self, text):
         self.editor.findFirst(text, True, False, True, True)
 
     def find_text(self, forward):
-        text_to_find = self.fr_widget.le_find.text()
+        text_to_find = self.fr_widget.leFind.text()
 
         c_line, c_index = self.editor.getCursorPosition()
         line_from, index_from, line_to, index_to = self.editor.getSelection()
@@ -149,30 +151,30 @@ class Qss(QssWindow):
 
         return self.editor.findFirst(text_to_find, False, False, False, True, forward, line, index)
 
-    def btn_replace_clicked(self):
+    def btnReplace_clicked(self):
         if self.editor.hasSelectedText():
             row1, line1, row2, line2 = self.editor.getSelection()
             self.editor.setCursorPosition(row1, line1)
         self.find_text(True)
-        self.editor.replace(self.fr_widget.le_replace.text())
+        self.editor.replace(self.fr_widget.leReplace.text())
         return True
 
-    def btn_replace_all_clicked(self):
+    def btnReplaceAll_clicked(self):
         self.editor.beginUndoAction()
         text = self.editor.text()
-        n = text.count(self.fr_widget.le_find.text(), False)
+        n = text.count(self.fr_widget.leFind.text(), False)
         for i in range(n):
             self.find_text(True)
-            self.editor.replace(self.fr_widget.le_replace.text())
+            self.editor.replace(self.fr_widget.leReplace.text())
         self.editor.endUndoAction()
 
-    def btn_attach_clicked(self, is_checked):
+    def btnAttach_clicked(self, is_checked):
         if is_checked:
             self.move_custom_widget()
 
     def moveEvent(self, event):
         super(Qss, self).moveEvent(event)
-        if self.btn_attach.isChecked():
+        if self.btnAttach.isChecked():
             self.move_custom_widget()
 
     def move_custom_widget(self):

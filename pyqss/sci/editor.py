@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication
 
 from .commenter import toggle_commenting
 from .keywords import *
-from .lexer import QsciLexerQSS, BACKGROUND_COLOR
+from .lexer import QsciLexerQSS
 
 
 class QssEditor(QsciScintilla):
@@ -57,7 +57,7 @@ class QssEditor(QsciScintilla):
         self.setMarginLineNumbers(0, QsciScintilla.NumberMargin)
         self.setMarginWidth(0, "00000")
         self.setMarginsForegroundColor(QColor(163, 163, 163))  # 前景色
-        self.setMarginsBackgroundColor(BACKGROUND_COLOR)  # 背景色
+        self.setMarginsBackgroundColor(QColor(20, 20, 20))  # 背景色
         # 左侧栏-符号
         self.setMarginLineNumbers(1, QsciScintilla.SymbolMargin)
         self.setMarginWidth(1, 0)
@@ -66,7 +66,7 @@ class QssEditor(QsciScintilla):
         # 左侧栏-折叠
         self.setFolding(QsciScintilla.PlainFoldStyle, 2)  # 折叠
         self.setMarginWidth(2, "00")
-        self.setFoldMarginColors(BACKGROUND_COLOR, BACKGROUND_COLOR)
+        self.setFoldMarginColors(QColor(20, 20, 20), QColor(20, 20, 20))
 
         # 滚动条
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # 隐藏横向滚动条
@@ -113,7 +113,6 @@ class QssEditor(QsciScintilla):
         """添加api，用于自动补全"""
         if custom_widget:
             if custom_widget.objectName():
-                self.lexer.widgets.append(custom_widget.objectName())
                 self.api_list.append(custom_widget.objectName())
             self.get_object_names(custom_widget)
 
@@ -126,7 +125,6 @@ class QssEditor(QsciScintilla):
         """遍历widget及其后代，获得objectName，用于自动补全"""
         for child in widget.children():
             if child.objectName():
-                self.lexer.widgets.append(child.objectName())
                 self.api_list.append(child.objectName())
             self.get_object_names(child)
 
