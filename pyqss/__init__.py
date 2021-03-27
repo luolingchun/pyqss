@@ -6,12 +6,22 @@ import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence, QEnterEvent
-from PyQt5.QtWidgets import QFileDialog, \
-    QShortcut, QMainWindow
+from PyQt5.QtWidgets import QFileDialog, QShortcut, QMainWindow
 
 from pyqss.tr import init_language
 from pyqss.widgets.find_replace import FRWidget
 from pyqss.widgets.main import QssWindow
+
+
+def read_qss(qss_file):
+    with open(qss_file, 'r', encoding='utf8') as f:
+        content = f.read()
+    return content
+
+
+def write_qss(qss_file, content):
+    with open(qss_file, 'w', encoding='utf8') as f:
+        f.write(content)
 
 
 class Qss(QssWindow):
@@ -54,8 +64,8 @@ class Qss(QssWindow):
         self.editor.opened.connect(self.open_qss)
 
         # 加载样式
-        with open(os.path.join(os.path.dirname(__file__), 'qss/default.qss'), 'r') as f:
-            self.setStyleSheet(f.read())
+        content = read_qss(os.path.join(os.path.dirname(__file__), 'qss/default.qss'))
+        self.setStyleSheet(content)
 
         # 初始化查找替换
         self.fr_widget = None
@@ -99,9 +109,9 @@ class Qss(QssWindow):
             self.open_qss(qss_file)
 
     def open_qss(self, qss_file):
-        with open(qss_file, 'r') as f:
-            self.editor.clear()
-            self.editor.append(f.read())
+        content = read_qss(qss_file)
+        self.editor.clear()
+        self.editor.append(content)
         self.qss_file = qss_file
         self.qss_name = str(os.path.basename(qss_file).split('.')[0])
         self.labelTitle.setText(self.title + '-' + self.qss_name)
@@ -112,8 +122,7 @@ class Qss(QssWindow):
             return
         qss_file, ext = QFileDialog.getSaveFileName(self, '保存qss', self.qss_name, '*.qss')
         if qss_file:
-            with open(qss_file, 'w', encoding='utf8') as f:
-                f.write(self.editor.text())
+            write_qss(qss_file, self.editor.text())
             self.qss_file = qss_file
             self.qss_name = str(os.path.basename(qss_file).split('.')[0])
             self.labelTitle.setText(self.title + '-' + str(os.path.basename(qss_file).split('.')[0]))
@@ -125,8 +134,7 @@ class Qss(QssWindow):
             if self.btnSave_clicked():
                 self.labelTitle.setText(self.labelTitle.text().strip('*'))
         else:
-            with open(self.qss_file, 'w') as f:
-                f.write(self.editor.text())
+            write_qss(self.qss_file, self.editor.text())
             self.labelTitle.setText(self.labelTitle.text().strip('*'))
 
     def leFind_text_changed(self, text):
