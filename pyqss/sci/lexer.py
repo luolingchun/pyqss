@@ -10,6 +10,10 @@ from PyQt5.Qsci import QsciScintilla, QsciLexerCustom
 from PyQt5.QtGui import QColor, QFont
 
 
+def isAWordChar(aChar):
+    return aChar >= 0x80 or aChar.isalnum() or aChar == "-" or aChar == "_"
+
+
 class QsciLexerQSS(QsciLexerCustom):
     Default = 0  # 默认
     Tag = 1  # 控件
@@ -89,7 +93,7 @@ class QsciLexerQSS(QsciLexerCustom):
         # self.setFont(QFont("Consolas", 14, weight=QFont.Normal), 0)   # Style 0: Consolas 14pt
         # self.setFont(QFont("Consolas", 14, weight=QFont.Normal), 1)
 
-        SC = QsciScintilla
+        # SC = QsciScintilla
         # 折叠标签颜色
         # self.__editor.SendScintilla(SC.SCI_MARKERSETBACK, SC.SC_MARKNUM_FOLDERSUB, QColor("0xa0a0a0"))
         # self.__editor.SendScintilla(SC.SCI_MARKERSETBACK, SC.SC_MARKNUM_FOLDERMIDTAIL, QColor("0xa0a0a0"))
@@ -153,7 +157,7 @@ class QsciLexerQSS(QsciLexerCustom):
 
         # 3. Tokenize the text
         # ---------------------
-        p = re.compile(r"\/[*]|[*]\/|\/\/|::|\r|\n|\s+|[*]+|=+|\"|'|\W|\w+|[\u0080-\uffff]+")
+        p = re.compile(r"/[*]|[*]/|//|::|\r|\n|\s+|[*]+|=+|\"|'|\W|\w+|[\u0080-\uffff]+")
 
         # 'token_list' is a list of tuples: (token_name, token_len)
         token_list = [(token, len(bytearray(token, "utf-8"))) for token in p.findall(text)]
@@ -181,7 +185,7 @@ class QsciLexerQSS(QsciLexerCustom):
             # 任意位置都可以注释，除注释外其他任何位置字符串都识别
             if state == self.Comment:
                 if token == "*/":
-                    self.setStyling(count, self.Operator)
+                    self.setStyling(count, self.Comment)
                     if inBrace:
                         lastState, state = state, self.Property
                     else:
@@ -270,7 +274,9 @@ class QsciLexerQSS(QsciLexerCustom):
                 else:
                     state = lastState
                 opPrev = token
-                if opStyle:
+                if token == "/*":
+                    self.setStyling(count, self.Comment)
+                elif opStyle:
                     self.setStyling(count, self.Operator)
                 else:
                     self.setStyling(count, state)
@@ -329,9 +335,6 @@ class QsciLexerQSS(QsciLexerCustom):
         if aChar in self.operatorList:
             return True
         return False
-
-    def isAWordChar(self, aChar):
-        return aChar >= 0x80 or aChar.isalnum() or aChar == "-" or aChar == "_"
 
 
 if __name__ == '__main__':

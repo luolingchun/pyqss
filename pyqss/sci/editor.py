@@ -112,6 +112,7 @@ class QssEditor(QsciScintilla):
     def add_apis(self, custom_widget):
         """添加api，用于自动补全"""
         if custom_widget:
+            self.api_list.append(custom_widget.__class__.__name__)
             if custom_widget.objectName():
                 self.api_list.append(custom_widget.objectName())
             self.get_object_names(custom_widget)
@@ -124,12 +125,17 @@ class QssEditor(QsciScintilla):
     def get_object_names(self, widget):
         """遍历widget及其后代，获得objectName，用于自动补全"""
         for child in widget.children():
+            self.api_list.append(child.__class__.__name__)
             if child.objectName():
                 self.api_list.append(child.objectName())
             self.get_object_names(child)
 
     def keyPressEvent(self, event):
+        colon_flag = False
         key = event.key()
+        if key == Qt.Key_Escape:
+            event.ignore()
+            return
         key_modifiers = QApplication.keyboardModifiers()
         if key == Qt.Key_Slash and key_modifiers == Qt.ControlModifier:
             # 注释快捷键，Ctrl+/

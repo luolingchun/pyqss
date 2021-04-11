@@ -8,7 +8,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QKeySequence, QEnterEvent
 from PyQt5.QtWidgets import QFileDialog, QShortcut, QMainWindow
 
-from pyqss.tr import init_language
+from pyqss.i18n import init_tr
 from pyqss.widgets.find_replace import FRWidget
 from pyqss.widgets.main import QssWindow
 
@@ -25,11 +25,11 @@ def write_qss(qss_file, content):
 
 
 class Qss(QssWindow):
-    def __init__(self, custom_widget=None, language='zh'):
+    def __init__(self, custom_widget=None, language='zh', theme='default'):
+        # 初始化语言
+        self.tr = init_tr(language)
         super(Qss, self).__init__()
         self.custom_widget = custom_widget
-        # 初始化语言
-        self.tr = init_language(language)
         # 设置窗口大小
         self.resize(600, 400)
 
@@ -38,8 +38,7 @@ class Qss(QssWindow):
         self.title = self.tr("QSS Editor")
         self.setWindowTitle(self.title)
         self.labelTitle.setText(self.title)
-        self.btnOpen.setText(self.tr('open'))
-        self.btnSave.setText(self.tr('save'))
+
         # 添加api
         self.editor.add_apis(self.custom_widget)
 
@@ -51,7 +50,6 @@ class Qss(QssWindow):
         shortcut_save = QShortcut(QKeySequence.Save, self)
         shortcut_save.activated.connect(self.shortcut_save_activated)
         QShortcut(QKeySequence("Ctrl+F"), self, self.find_replace)
-        QShortcut(QKeySequence("Esc"), self, lambda: self.fr_widget.hide())
 
         # 信号和槽
         self.btnOpen.clicked.connect(self.btnOpen_clicked)
@@ -64,7 +62,7 @@ class Qss(QssWindow):
         self.editor.opened.connect(self.open_qss)
 
         # 加载样式
-        content = read_qss(os.path.join(os.path.dirname(__file__), 'qss/default.qss'))
+        content = read_qss(os.path.join(os.path.dirname(__file__), f'theme/{theme}.qss'))
         self.setStyleSheet(content)
 
         # 初始化查找替换
@@ -73,7 +71,7 @@ class Qss(QssWindow):
 
     def init_fr_widget(self):
         """查找替换控件"""
-        self.fr_widget = FRWidget(parent=self)
+        self.fr_widget = FRWidget(self.tr, parent=self)
         self.fr_widget.hide()
         self.fr_widget.setGeometry(50, 50, self.width() - 100, 40)
         self.fr_widget.leFind.textChanged.connect(self.leFind_text_changed)
@@ -199,6 +197,13 @@ class Qss(QssWindow):
             self.setCursor(Qt.ArrowCursor)
 
         return QMainWindow.eventFilter(self, obj, event)
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        if key == Qt.Key_Escape:
+            # 隐藏查找替换
+            self.fr_widget.hide()
+        super(Qss, self).keyPressEvent(event)
 
     def closeEvent(self, event):
         if self.qss_file:

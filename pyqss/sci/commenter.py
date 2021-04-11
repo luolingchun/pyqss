@@ -7,6 +7,7 @@ LINE_ENDING = '\n'
 
 
 def toggle_commenting(editor):
+    replace_text = ''
     # Check if the selections are valid
     selections = get_selections(editor)
     if selections is None:
@@ -157,6 +158,7 @@ def _comment(line, indent_level):
 
 
 def _uncomment(line, indent_level=None):
+    # indent_level: do not delete.
     if line.strip().startswith(COMMENT_STRING):
         return line.replace(COMMENT_STRING, "", ).replace(COMMENT_STRING[::-1], "", )
     else:

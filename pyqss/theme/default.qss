@@ -1,0 +1,182 @@
+/*主窗口*/
+#QssWidget{
+	border-radius: 10px;
+    background-color: rgb(20, 20, 20);
+}
+/*左上角图标*/
+#labelIcon{
+	color: rgb(10, 200, 50);
+	min-width: 40px;
+	min-height: 40px;
+	font-size: 32px;
+	font-family: "Microsoft Yahei";
+	background-color: rgb(20, 20, 20);
+}
+/*打开、关闭按钮*/
+#btnOpen, #btnSave{
+	font-size: 14px;
+	font-family: "Microsoft Yahei";
+	border: 0px;
+	border-radius: 20px;
+	min-width: 60px;
+	min-height: 40px;
+	color: white;
+}
+/*标题*/
+#labelTitle{
+	color: white;
+	font-size: 16px;
+	font-family: "Microsoft Yahei";
+}
+/*吸附按钮*/
+#btnAttach{
+	border: 0px;
+	border-radius: 20px;
+	color: white;
+	font-size: 14px;
+	font-family: "Webdings";
+	min-width: 40px;
+	min-height: 40px;
+}
+/*媳妇按钮：选中状态*/
+#btnAttach:checked{
+	color: rgb(10, 200, 50);
+}
+/*最小化、关闭按钮*/
+#btnMin, #btnClose{
+	border: 0px;
+	border-radius: 20px;
+	min-width: 40px;
+	min-height: 40px;
+	color: white;
+	font-size: 14px;
+	font-family: "Webdings";
+}
+/*关闭按钮鼠标悬停*/
+#btnClose:hover{
+	background-color: rgb(240, 104, 36);
+}
+/*其他按钮鼠标悬停*/
+#btnOpen:hover, #btnSave:hover, #btnMin:hover, #btnAttach:hover{
+	background-color: rgba(15, 200, 50, 100);
+}
+/*其他按钮鼠标按下*/
+#btnOpen:pressed, #btnSave:pressed, #btnMin:pressed, #btnAttach:pressed{
+	background-color: rgba(10, 200, 50, 50);
+}
+/*关闭按钮鼠标按下*/
+#btnClose:pressed{
+	background-color: rgba(240, 104, 36, 100);
+}
+/*查找替换*/
+#FRWidget{
+	border: 0px;
+	border-radius: 10px;
+	min-height: 60px;
+	background-color: rgb(50, 50, 50);
+}
+/*查找替换：输入框*/
+#FRWidget>QLineEdit{
+	border: 1px solid gray;
+	min-height: 20px;
+	border-radius: 6px;
+	margin-left: 2px;
+	color: darkgray;
+	font-size: 14px;
+	font-family: "Microsoft Yahei";
+	min-height: 20px;
+	background-color: rgb(80, 80, 80);
+}
+/*查找替换：输入框获取焦点*/
+#FRWidget>QLineEdit:focus{
+	border-color: rgb(10, 200, 50);
+}
+/*查找替换：输入框鼠标悬停*/
+#FRWidget>QLineEdit:hover{
+	border-color: rgb(10, 200, 50);
+}
+/*查找替换：按钮*/
+#FRWidget>QPushButton{
+	border: 0px;
+	min-width: 24px;
+	min-height: 24px;
+	font-size: 18px;
+	font-weight: bold;
+	color: darkgray;
+}
+/*查找替换：按钮鼠标悬停*/
+#FRWidget>QPushButton:hover{
+	border-radius: 12px;
+	background-color: rgba(10, 200, 50, 100);
+}
+/*查找替换：按钮鼠标按下*/
+#FRWidget>QPushButton:pressed{
+	background-color: rgba(10, 200, 50, 50);
+}
+/*查找替换：上一个下一个按钮*/
+#btnPre, #btnNext{
+	font-family: "Wingdings 3";
+}
+/*查找替换：替换（全部）按钮*/
+#btnReplace, #btnReplaceAll{
+	font-family: "Wingdings 2";
+}
+/*qsci编辑器*/
+#editor{
+	border: 0px;
+}
+/*qsci编辑器：垂直滚动条*/
+#editor QScrollBar::vertical{
+	border: 0px;
+	background-color: rgb(20, 20, 20);
+	width: 12px;
+}
+
+#editor QScrollBar::sub-line:vertical{
+	height: 0px;
+}
+#editor QScrollBar::sub-page:vertical{
+	background: rgb(20, 20, 20);
+}
+/*qsci编辑器：垂直滚动条-上背景色*/
+#editor QScrollBar::add-page:vertical{
+	background: rgb(20, 20, 20);
+}
+/*qsci编辑器：垂直滚动条背景色*/
+#editor QScrollBar::handle:vertical{
+	border-radius: 5px;
+	background: rgba(50, 50, 50, 200);
+}
+/*qsci编辑器：垂直滚动条鼠标悬停背景色*/
+#editor QScrollBar::handle:vertical:hover{
+	border-radius: 5px;
+	background: rgba(50, 50, 50, 255);
+}
+#editor QScrollBar::add-line:vertical{
+	height: 0px;
+}
+/*自动补全*/
+#editor QAbstractItemView{
+	border: 1px solid rgb(100, 100, 100);
+	color: darkgray;
+	background-color: rgb(50, 50, 50);
+}
+/*自动补全：选项*/
+#editor QAbstractItemView:item{
+	background-color: rgb(50, 50, 50);
+}
+/*自动补全：选项-选中*/
+#editor QAbstractItemView:item:selected{
+	color: darkgray;
+	background-color: rgba(10, 200, 50, 100);
+}
+/*自动补全：垂直滚动条*/
+#editor QAbstractItemView QScrollBar:vertical{
+	border: 0px;
+	width: 0px;
+}
+/*自动补全：水平滚动条*/
+#editor QAbstractItemView QScrollBar:horizontal{
+	border: 0px;
+	height: 0px;
+}

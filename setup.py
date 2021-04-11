@@ -5,7 +5,7 @@
 
 from setuptools import setup
 
-__version__ = '1.3.2'
+__version__ = '1.4.0'
 
 long_description = """
 

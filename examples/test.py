@@ -4,11 +4,17 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
 
+
+class QTest(QMainWindow):
+    def __init__(self):
+        super(QTest, self).__init__()
+
+
 if __name__ == '__main__':
     # 适配高分辨率
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication([])
-    window = QMainWindow()
+    window = QTest()
     pushbutton = QPushButton('button', window)
     pushbutton.setObjectName('button')
     pushbutton.move(20, 20)
@@ -20,8 +26,8 @@ if __name__ == '__main__':
 
     from pyqss import Qss
 
-    qss = Qss(window, language='en')
-    # qss = Qss(window, language='zh')
+    # qss = Qss(window, language='en')
+    qss = Qss(window, language='zh')
     qss.show()
 
     app.exec_()
