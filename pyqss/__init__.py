@@ -30,6 +30,7 @@ class Qss(QssWindow):
         self.tr = init_tr(language)
         super(Qss, self).__init__()
         self.custom_widget = custom_widget
+        self.custom_style_sheet = self.custom_widget.styleSheet()
         # 设置窗口大小
         self.resize(600, 400)
 
@@ -99,7 +100,7 @@ class Qss(QssWindow):
         # self.setStyleSheet(text)
         self.labelTitle.setText(self.title + "-" + self.qss_name + '*')
         if hasattr(self.custom_widget, 'setStyleSheet'):
-            self.custom_widget.setStyleSheet(text)
+            self.custom_widget.setStyleSheet(text + '\n' + self.custom_style_sheet)
 
     def btnOpen_clicked(self):
         qss_file, ext = QFileDialog.getOpenFileName(self, '打开qss', '', '*.qss')
